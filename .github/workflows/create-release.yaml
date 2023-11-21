@@ -123,7 +123,7 @@ jobs:
 
   create-draft:
     name: Create draft release
-    needs: [bump-sec-scanners-config,validate-release]
+    needs: bump-sec-scanners-config
     runs-on: ubuntu-latest
 
     steps:
