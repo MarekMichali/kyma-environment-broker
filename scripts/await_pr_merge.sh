@@ -13,5 +13,5 @@ set -o pipefail # prevents errors in a pipeline from being masked
 
 until  $(gh pr view ${PR_NUMBER} --json closed | jq -r '.closed'); do
   echo "Waiting for https://github.com/${KYMA_ENVIRONMENT_BROKER_REPO}/pull/${PR_NUMBER} to be merged"
-  sleep 5
+  sleep 0.5
 done
