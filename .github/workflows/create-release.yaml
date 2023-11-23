@@ -79,7 +79,7 @@ jobs:
 
       - name: Await PR merge
         if: ${{ inputs.sec-scanners-config }}
-        timeout-minutes: 10
+        timeout-minutes: 1
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
