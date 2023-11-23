@@ -87,6 +87,7 @@ jobs:
         run: |
           if [ "$PR_NUMBER" -gt 0 ]; then
             scripts/await_pr_merge.sh
+            git checkout main
           else
             echo "Step skipped"
           fi
