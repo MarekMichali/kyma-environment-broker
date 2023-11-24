@@ -87,7 +87,6 @@ jobs:
         run: |
           if [ "$PR_NUMBER" -gt 0 ]; then
             scripts/await_pr_merge.sh
-            git checkout main
           else
             echo "Step skipped"
           fi
@@ -253,7 +252,7 @@ jobs:
 
   publish-release:
     name: Publish release
-    needs: [create-draft, wait-for-prow-jobs, run-unit-tests]
+    needs: [create-draft, bump-sec-scanners-config, run-unit-tests]
     runs-on: ubuntu-latest
 
     steps:
