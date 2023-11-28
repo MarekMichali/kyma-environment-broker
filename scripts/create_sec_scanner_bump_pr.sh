@@ -46,3 +46,4 @@ echo "Link for created PR: ${pr_link}"
 pr_number=$(echo "$pr_link" | awk -F'/' '{print $NF}')
 #gh pr edit $pr_number --add-label kind/enhancement
 echo "$pr_number"
+#tes
