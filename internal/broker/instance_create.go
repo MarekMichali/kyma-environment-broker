@@ -114,6 +114,7 @@ func NewProvision(cfg Config,
 //	PUT /v2/service_instances/{instance_id}
 func (b *ProvisionEndpoint) Provision(ctx context.Context, instanceID string, details domain.ProvisionDetails, asyncAllowed bool) (domain.ProvisionedServiceSpec, error) {
 	operationID := uuid.New().String()
+	//return domain.ProvisionedServiceSpec{}, nil
 	logger := b.log.WithFields(logrus.Fields{"instanceID": instanceID, "operationID": operationID, "planID": details.PlanID})
 	logger.Infof("Provision called with context: %s", marshallRawContext(hideSensitiveDataFromRawContext(details.RawContext)))
 
