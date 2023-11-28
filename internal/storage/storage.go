@@ -55,7 +55,7 @@ func NewFromConfig(cfg Config, evcfg events.Config, cipher postgres.Cipher, log 
 }
 
 func NewMemoryStorage() BrokerStorage {
-	//return nil
+	return nil
 	op := memory.NewOperation()
 	return storage{
 		operation:      op,
