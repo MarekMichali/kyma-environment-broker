@@ -70,11 +70,11 @@ function runOnRelease() {
     fi 
 
     count_of_required_labels=$(grep -o -w -F -c "${supported_labels}" <<< "$present_labels" || true)
-    echo "aaaaaa"
+    echo "count"
     echo $count_of_required_labels
-    echo "aaaaaa"
+    echo "/count/grep"
     grep -o -w -F -c "${supported_labels}" <<< "$present_labels" || true
-    echo "aaaaaa"
+    echo "/grep"
     if [[ $count_of_required_labels -eq 0 ]]; then 
       echo "PR $pr_id dosent have any /kind label"
       notValidPrs+=("$pr_id")
