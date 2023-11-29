@@ -70,7 +70,11 @@ function runOnRelease() {
     fi 
 
     count_of_required_labels=$(grep -o -w -F -c "${supported_labels}" <<< "$present_labels" || true)
-    echo "count"
+    echo "supported"
+    echo $supported_labels
+    echo "/suppported/preset"
+    echo $present_labels
+    echo "/presentcount"
     echo $count_of_required_labels
     echo "/count/grep"
     grep -o -w -F -c "${supported_labels}" <<< "$present_labels" || true
