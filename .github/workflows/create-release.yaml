@@ -54,7 +54,7 @@ jobs:
       - name: Run label validation
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 scripts/python/label_validator.py
+        run: python3 scripts/python/release_label_validator.py
 
 
       - name: Validate Labels
