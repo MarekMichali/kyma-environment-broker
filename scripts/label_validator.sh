@@ -69,7 +69,7 @@ function runOnRelease() {
       continue
     fi 
 
-    count_of_required_labels=()
+    count_of_required_labels=0
     IFS=' ' read -ra supported_labels_array <<< "$supported_labels"
     for value in "${present_labels_array[@]}"; do
       if echo "$present_labels" | grep -q "\<$value\>"; then
