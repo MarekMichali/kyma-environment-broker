@@ -33,7 +33,7 @@ function runOnRelease() {
   supported_labels=$(yq eval '.changelog.categories.[].labels' ./.github/release.yml | grep "\- kind"| sed -e 's/- //g' | cut -d "#" -f 1)
   supported_labels=$(echo "${supported_labels[*]}" | tr " " "\n" )
 
-  notValidPrs=()
+  notValidPrs=0
   while read -r commit; do
     if [[ -z $commit ]]; then 
       continue
@@ -69,16 +69,16 @@ function runOnRelease() {
       continue
     fi 
 
-    supported_labels_array=($supported_labels)
-    present_labels_array=($present_labels)
-    count_of_required_labels=0
-    for i in "${present_labels_array[@]}"; do
-      if [[ " ${supported_labels_array[@]} " =~ " ${i} " ]]; then
-          ((count_of_required_labels++))
-      fi
-    done
+    #supported_labels_array=($supported_labels)
+    #present_labels_array=($present_labels)
+    #count_of_required_labels=0
+    #for i in "${present_labels_array[@]}"; do
+   #   if [[ " ${supported_labels_array[@]} " =~ " ${i} " ]]; then
+   #       ((count_of_required_labels++))
+   #   fi
+   # done
 
-    #count_of_required_labels=$(grep -o -w -F -c "${supported_labels}" <<< "$present_labels" || true)
+    count_of_required_labels=$(grep -o -w -F -c "${supported_labels}" <<< "$present_labels" || true)
     echo "supported"
     echo $supported_labels
     echo "/suppported/preset"
