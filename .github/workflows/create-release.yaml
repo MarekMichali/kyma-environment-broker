@@ -42,12 +42,16 @@ jobs:
       - name: Check for existing artifacts from previous release runs
         run: "./scripts/check_artifacts_existence.sh ${{ inputs.name }}"
 
-      - uses: actions/setup-python@v4
+      - name: Setup python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-          cache: 'pip' # caching pip dependencies
-      - run: pip install -r scripts/python/requirements.txt
-      - name: Run label validaiton
+          cache: 'pip'
+
+      - name: Install requirements
+        run: pip install -r scripts/python/requirements.txt
+
+      - name: Run label validation
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 scripts/python/label_validator.py
