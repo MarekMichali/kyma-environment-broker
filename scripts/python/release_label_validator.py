@@ -14,7 +14,7 @@ with open('.github/release.yml', 'r') as file:
 
 print(f"Label pool: {label_pool}")
 token = os.getenv('GITHUB_TOKEN')
-repo = 'kyma-project/kyma-environment-broker'
+repo = 'MarekMichali/kyma-environment-broker'
 
 response = requests.get(f'https://api.github.com/repos/{repo}/releases/latest', headers={'Authorization': f'token {token}'})
 response.raise_for_status()
