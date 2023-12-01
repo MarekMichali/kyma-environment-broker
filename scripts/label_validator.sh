@@ -69,15 +69,16 @@ function runOnRelease() {
       continue
     fi 
 
+    supported_labels_array=($supported_labels)
+    present_labels_array=($present_labels)
     count_of_required_labels=0
-    IFS=' ' read -ra supported_labels_array <<< "$supported_labels"
-    for value in "${present_labels_array[@]}"; do
-      if echo "$present_labels" | grep -q "\<$value\>"; then
-          count_of_required_labels=$(echo "$present_labels" | grep -o "\<$value\>" | wc -l)
+    for i in "${present_labels_array[@]}"; do
+      if [[ " ${supported_labels_array[@]} " =~ " ${i} " ]]; then
+          ((count_of_required_labels++))
       fi
     done
 
-  #  count_of_required_labels=$(grep -o -w -F -c "${supported_labels}" <<< "$present_labels" || true)
+    #count_of_required_labels=$(grep -o -w -F -c "${supported_labels}" <<< "$present_labels" || true)
     echo "supported"
     echo $supported_labels
     echo "/suppported/preset"
