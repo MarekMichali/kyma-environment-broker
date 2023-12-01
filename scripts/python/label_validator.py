@@ -12,7 +12,7 @@ with open('.github/release.yml', 'r') as file:
     except yaml.YAMLError as exc:
         print(exc)
 
-
+print("\nLabel pool: "+label_pool)
 token = os.getenv('GITHUB_TOKEN')
 repo = 'kyma-project/kyma-environment-broker'
 
