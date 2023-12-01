@@ -36,19 +36,19 @@ for pr in prs_since_last_release:
     labels = [label['name'] for label in pr['labels']]
     common_labels = set(labels).intersection(label_pool)
     if len(common_labels) != 1:
-        invalid_prs.append((pr['number'], pr['html_url']))
+        invalid_prs.append(pr['html_url'])
     else:
-        valid_prs.append(pr['number'])
+        valid_prs.append(pr['html_url'])
 
 print("\nThese PRs have exactly one label from the pool:")
-for pr_number in valid_prs:
-    print(f"PR #{pr_number}")
+for pr_url in valid_prs:
+    print(f"PR: {pr_url}")
 
 
 if invalid_prs:
     print("\nThese PRs don't have exactly one label from the pool:")
-    for pr_number, pr_url in invalid_prs:
-        print(f"PR #{pr_number}: {pr_url}")
+    for pr_url in invalid_prs:
+        print(f"PR: {pr_url}")
     sys.exit(1) 
 
 print("\nAll PRs have exactly one label from the pool")
