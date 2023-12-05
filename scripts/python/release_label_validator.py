@@ -41,14 +41,12 @@ for pr in prs_since_last_release:
         valid_prs.append(pr['html_url'])
 
 print("\nThese PRs have exactly one label from the pool:")
-for pr_url in valid_prs:
-    print(f"PR: {pr_url}")
+print('\n'.join([f"PR: {pr}" for pr in valid_prs]))
 
 
 if invalid_prs:
     print("\nThese PRs don't have exactly one label from the pool:")
-    for pr_url in invalid_prs:
-        print(f"PR: {pr_url}")
+    print('\n'.join([f"PR: {pr}" for pr in invalid_prs]))
     sys.exit(1) 
 
 print("\nAll PRs have exactly one label from the pool")
