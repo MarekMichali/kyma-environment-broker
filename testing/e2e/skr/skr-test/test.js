@@ -43,7 +43,7 @@ describe('SKR test', function() {
  // machineTypeE2ETest(getShootOptionsFunc, getShootInfoFunc);
 
   after('Cleanup the resources', async function() {
-    this.timeout(deprovisioningTimeout);
+   // this.timeout(deprovisioningTimeout);
    // await deprovisionAndUnregisterSKR(options, deprovisioningTimeout, true);
   });
 });
