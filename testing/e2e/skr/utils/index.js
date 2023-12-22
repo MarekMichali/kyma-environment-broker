@@ -38,6 +38,15 @@ function initializeK8sClient(opts) {
     watch = new k8s.Watch(kc);
     k8sServerUrl = kc.getCurrentCluster() ? kc.getCurrentCluster().server : null;
 
+    const test = async () => {
+    try {
+        const podsRes = await k8sCoreV1Api.listNamespacedPod('kyma-system');
+        console.log(podsRes.body);
+    } catch (err) {
+        console.error(err);
+    }
+  };
+  test();
 
   } catch (err) {
     console.log(err.message);
