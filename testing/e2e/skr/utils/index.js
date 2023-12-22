@@ -37,6 +37,8 @@ function initializeK8sClient(opts) {
     console.log('Making Api client - Watch');
     watch = new k8s.Watch(kc);
     k8sServerUrl = kc.getCurrentCluster() ? kc.getCurrentCluster().server : null;
+
+
   } catch (err) {
     console.log(err.message);
   }
