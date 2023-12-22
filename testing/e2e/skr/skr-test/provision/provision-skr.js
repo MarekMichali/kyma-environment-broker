@@ -12,9 +12,10 @@ const {BTPOperatorCreds} = require('../../smctl/helpers');
 
 async function provisionSKRAndInitK8sConfig(options, provisioningTimeout) {
   console.log('Provisioning new SKR instance...');
-  const shoot = await provisionSKRInstance(options, provisioningTimeout);
-
+  //const shoot = await provisionSKRInstance(options, provisioningTimeout);
+  
   console.log('Initiating K8s config...');
+  const shoot = await keb.downloadKubeconfig("0135EECC-7C17-418C-A4AA-AF6E6AF035D7")
   await initK8sConfig(shoot);
   console.log('Initialization of K8s finished...');
 

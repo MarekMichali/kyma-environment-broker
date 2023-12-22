@@ -13,7 +13,7 @@ function machineTypeE2ETest(getShootOptionsFunc, getShootInfoFunc) {
     let updateMachineType = undefined;
     let defaultMachineType = undefined;
     const planID = getEnvOrThrow('KEB_PLAN_ID');
-    const gardener = new GardenerClient(GardenerConfig.fromEnv());
+    const gardener = null
 
     before('Get provisioned Shoot Info', async function() {
       shoot = getShootInfoFunc();

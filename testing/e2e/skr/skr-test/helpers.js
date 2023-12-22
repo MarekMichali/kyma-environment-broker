@@ -7,7 +7,7 @@ const os = require('os');
 const {expect} = require('chai');
 
 const keb = new KEBClient(KEBConfig.fromEnv());
-const gardener = new GardenerClient(GardenerConfig.fromEnv());
+const gardener = null;
 const kcp = new KCPWrapper(KCPConfig.fromEnv());
 const testNS = 'skr-test';
 const DEBUG = process.env.DEBUG === 'true';
@@ -159,10 +159,10 @@ async function saveKubeconfig(kubeconfig) {
 
 async function initK8sConfig(shoot) {
   console.log('Should save kubeconfig for the SKR to ~/.kube/config');
-  await saveKubeconfig(shoot.kubeconfig);
+  await saveKubeconfig(shoot);
 
   console.log('Should initialize K8s client');
-  await initializeK8sClient({kubeconfig: shoot.kubeconfig});
+  await initializeK8sClient({kubeconfig: shoot});
 }
 
 module.exports = {

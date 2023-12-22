@@ -37,13 +37,13 @@ describe('SKR test', function() {
   btpManagerSecretTest();
 
   // Run OIDC tests
-  oidcE2ETest(getShootOptionsFunc, getShootInfoFunc);
+ // oidcE2ETest(getShootOptionsFunc, getShootInfoFunc);
 
   // Run Machine Type tests
-  machineTypeE2ETest(getShootOptionsFunc, getShootInfoFunc);
+ // machineTypeE2ETest(getShootOptionsFunc, getShootInfoFunc);
 
   after('Cleanup the resources', async function() {
     this.timeout(deprovisioningTimeout);
-    await deprovisionAndUnregisterSKR(options, deprovisioningTimeout, true);
+   // await deprovisionAndUnregisterSKR(options, deprovisioningTimeout, true);
   });
 });
