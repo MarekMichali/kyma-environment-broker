@@ -24,12 +24,12 @@ function btpManagerSecretTest() {
       secretFromProvisioning = await getSecret(secretName, ns);
       checkSecretDataKeys(secretFromProvisioning);
       modifiedSecret = JSON.parse(JSON.stringify(secretFromProvisioning));
-      process.exit(1);
     });
     // Check if the Secret contains expected values
     it('should check if Secret data values match expected values', async function() {
       const actualSecretData = await getSecretData(secretName, ns);
       checkSecretDataValues(actualSecretData);
+      process.exit(1);
     });
     // Check if the Secret is properly reconciled after deletion
     it('should check if Secret is reconciled after deletion', async function() {
