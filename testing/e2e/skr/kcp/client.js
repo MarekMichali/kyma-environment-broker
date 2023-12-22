@@ -1,6 +1,7 @@
 const execa = require('execa');
 const fs = require('fs');
 const stream = require('stream');
+const axios = require('axios');
 const {
   getEnvOrThrow,
   debug,
@@ -115,6 +116,16 @@ class KCPWrapper {
     return JSON.parse(result);
   }
 
+  async kubeconfig(query) {
+    let args = ['kubeconfig'];
+    if (query.shoot) {
+      args = args.concat('--shoot', `${query.shoot}`);
+    }
+    console.log(args)
+    const result = await this.exec(args);
+    return JSON.parse(result);
+  }
+
   async login() {
     let args;
     if (process.env.KCP_OIDC_CLIENT_SECRET) {
@@ -205,6 +216,47 @@ class KCPWrapper {
   async getRuntimeEvents(instanceID) {
     await this.login();
     return this.exec(['runtimes', '--instance-id', instanceID, '--events']);
+  }
+
+  async getKubeconfig(url) {
+    await this.login();
+
+    try {
+
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        try {
+          await fs.writeFile('kubeconfig', response.data);
+        } catch (err) {
+            console.error('Failed to write file:', err);
+        }
+        console.log('Kubeconfig has been fetched and written to file.');
+      } else {
+        console.log(`Failed to fetch Kubeconfig: HTTP ${response.status}`);
+      }
+    } catch (error) {
+      console.error(`Failed to fetch Kubeconfig: ${error}`);
+    }
+
+
+
+
+
+    
+   // return this.exec(['kubeconfig', '--shoot', shoot]);
+  }
+
+  async getKubeconfig2(url) {
+    try {
+      const response = await axios.get(url);
+      if(response.status === 200){
+        return response.data;
+      } else {
+        throw new Error(`Failed to fetch Kubeconfig, response status: ${response.status}`);
+      }
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   async getRuntimeStatusOperations(instanceID) {

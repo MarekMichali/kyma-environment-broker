@@ -7,7 +7,7 @@ const os = require('os');
 const {expect} = require('chai');
 
 const keb = new KEBClient(KEBConfig.fromEnv());
-const gardener = new GardenerClient(GardenerConfig.fromEnv());
+//const gardener = new GardenerClient(GardenerConfig.fromEnv()); //here
 const kcp = new KCPWrapper(KCPConfig.fromEnv());
 const testNS = 'skr-test';
 const DEBUG = process.env.DEBUG === 'true';
@@ -104,6 +104,7 @@ async function getSKRRuntimeStatus(instanceID) {
 }
 
 // gets the SKR config by its instance id
+/*
 async function getSKRConfig(instanceID) {
   const runtimeStatus = await kcp.getRuntimeStatusOperations(instanceID);
   const objRuntimeStatus = JSON.parse(runtimeStatus);
@@ -111,9 +112,9 @@ async function getSKRConfig(instanceID) {
   const shootName = objRuntimeStatus.data[0].shootName;
 
   console.log(`Fetching SKR info for shoot: ${shootName}`);
-  return await gardener.getShoot(shootName);
+  return await gardener.getShoot(shootName); //
 }
-
+*/
 function getEnvOrThrow(key) {
   if (!process.env[key]) {
     throw new Error(`Env ${key} not present`);
@@ -159,17 +160,17 @@ async function saveKubeconfig(kubeconfig) {
 
 async function initK8sConfig(shoot) {
   console.log('Should save kubeconfig for the SKR to ~/.kube/config');
-  await saveKubeconfig(shoot.kubeconfig);
+  await saveKubeconfig(shoot);
 
   console.log('Should initialize K8s client');
-  await initializeK8sClient({kubeconfig: shoot.kubeconfig});
+  await initializeK8sClient({kubeconfig: shoot});
 }
 
 module.exports = {
   keb,
   kcp,
-  gardener,
-  getSKRConfig,
+  //gardener,
+ // getSKRConfig,
   getSKRRuntimeStatus,
   gatherOptions,
   withInstanceID,

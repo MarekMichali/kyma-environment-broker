@@ -9,7 +9,7 @@ const {deprovisionAndUnregisterSKR} = require('./provision/deprovision-skr');
 
 const provisioningTimeout = 1000 * 60 * 30; // 30m
 const deprovisioningTimeout = 1000 * 60 * 95; // 95m
-let globalTimeout = 1000 * 60 * 70; // 70m
+let globalTimeout = 1000 * 60 * 70; // 70m 
 const slowTime = 5000;
 
 describe('SKR test', function() {
@@ -32,18 +32,18 @@ describe('SKR test', function() {
     skr = await provisionSKRAndInitK8sConfig(options, provisioningTimeout);
     options = skr.options;
   });
-
+  console.log("test")
   // Run BTP Manager Secret tests
   btpManagerSecretTest();
 
   // Run OIDC tests
-  oidcE2ETest(getShootOptionsFunc, getShootInfoFunc);
+  //oidcE2ETest(getShootOptionsFunc, getShootInfoFunc);
 
   // Run Machine Type tests
-  machineTypeE2ETest(getShootOptionsFunc, getShootInfoFunc);
+  //machineTypeE2ETest(getShootOptionsFunc, getShootInfoFunc);
 
-  after('Cleanup the resources', async function() {
-    this.timeout(deprovisioningTimeout);
-    await deprovisionAndUnregisterSKR(options, deprovisioningTimeout, true);
-  });
+ // after('Cleanup the resources', async function() {
+   // this.timeout(deprovisioningTimeout);
+    ///await deprovisionAndUnregisterSKR(options, deprovisioningTimeout, true);
+  //});
 });

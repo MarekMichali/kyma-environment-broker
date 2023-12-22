@@ -180,12 +180,12 @@ class KEBClient {
 
   async provisionSKR(name, instanceID, platformCreds, btpOperatorCreds, customParams) {
     const payload = this.buildPayload(name, instanceID, platformCreds, btpOperatorCreds, customParams);
-
+    console.log(payload)
     const endpoint = `service_instances/${instanceID}`;
     try {
       return await this.callKEB(payload, endpoint, 'put');
     } catch (err) {
-      throw new Error(`error while provisioning SKR: ${err.toString()}`);
+      throw new Error(`error while provisioning SKR: ${err.toString()}`); //ten error
     }
   }
 

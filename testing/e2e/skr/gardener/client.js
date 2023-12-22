@@ -106,7 +106,7 @@ class GardenerClient {
         }, 1200 * 1000, 'Waiting for shoot to be ready timeout', this.watch);
   }
 
-  async getShoot(shootName) {
+  async getShoot(shootName) { //
     debug(`Fetching shoot: ${shootName} from gardener namespace: ${GARDENER_PROJECT}`);
 
     const secretResp = await this.coreV1API.readNamespacedSecret(

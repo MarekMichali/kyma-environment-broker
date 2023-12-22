@@ -38,7 +38,7 @@ async function provisionSKRInstance(options, timeout) {
         null,
         btpOperatorCreds,
         options.customParams,
-        timeout);
+        timeout); //sie wywala
 
     debug('SKR is provisioned!');
     return skr.shoot;
