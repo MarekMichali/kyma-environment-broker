@@ -15,7 +15,7 @@ async function provisionSKRAndInitK8sConfig(options, provisioningTimeout) {
   //const shoot = await provisionSKRInstance(options, provisioningTimeout);
   
   console.log('Initiating K8s config...');
-  const shoot = await keb.downloadKubeconfig("0135EECC-7C17-418C-A4AA-AF6E6AF035D7")
+  const shoot = await keb.downloadKubeconfig("4F5D3511-11BE-4B3A-891A-704B5515E79A")
   await initK8sConfig(shoot);
   console.log('Initialization of K8s finished...');
 
