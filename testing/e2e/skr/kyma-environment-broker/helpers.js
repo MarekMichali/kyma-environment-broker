@@ -34,15 +34,15 @@ async function provisionSKR(
   const objRuntimeStatus = JSON.parse(runtimeStatus);
   expect(objRuntimeStatus).to.have.nested.property('data[0].shootName').not.empty;
   debug('Fetching shoot info from gardener...');*/
-  const re = await kcp.getRuntimeEvents("4125AECA-3FD8-4049-B635-6F526B96D0D4");
-  console.log(re);
+ // const re = await kcp.getRuntimeEvents("4125AECA-3FD8-4049-B635-6F526B96D0D4");
+  //console.log(re);
   // usage
   const operationID=`0b7aac57-0127-43e4-9d95-d9b1ad8c6b1a`;
-  const shoot = await kcp.getKubeconfig2("https://kyma-env-broker.cp.dev.kyma.cloud.sap/kubeconfig/5DB97144-977F-4C28-92F6-7A3BD7EC8823");
+  const shoot = await kcp.getKubeconfig2("https://kyma-env-broker.cp.dev.kyma.cloud.sap/kubeconfig/4F5D3511-11BE-4B3A-891A-704B5515E79A");
   //console.log(z)
  // const shoot = await kcp.getKubeconfig("c-0470bd5");
   //const shoot = await gardener.getShoot(objRuntimeStatus.data[0].shootName); //replace with kcp cli? it fetches here the shoot kubeconfig
-  console.log(shoot);
+  //console.log(shoot);
   //debug(`Compass ID ${shoot.compassID}`);
 1 
   return {
