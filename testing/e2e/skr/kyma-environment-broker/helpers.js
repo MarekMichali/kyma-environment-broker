@@ -38,7 +38,7 @@ async function provisionSKR(
   //console.log(re);
   // usage
   const operationID=`0b7aac57-0127-43e4-9d95-d9b1ad8c6b1a`;
-  const shoot = await kcp.getKubeconfig2("https://kyma-env-broker.cp.dev.kyma.cloud.sap/kubeconfig/4F5D3511-11BE-4B3A-891A-704B5515E79A");
+  const shoot = await kcp.getKubeconfig2("https://kyma-env-broker.cp.dev.kyma.cloud.sap/kubeconfig/827CCFFA-2DD9-4975-912C-1DD5B5EF3828");
   //console.log(z)
  // const shoot = await kcp.getKubeconfig("c-0470bd5");
   //const shoot = await gardener.getShoot(objRuntimeStatus.data[0].shootName); //replace with kcp cli? it fetches here the shoot kubeconfig

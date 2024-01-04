@@ -30,6 +30,7 @@ describe('SKR test', function() {
   before('Ensure SKR is provisioned', async function() {
     this.timeout(provisioningTimeout);
     skr = await provisionSKRAndInitK8sConfig(options, provisioningTimeout);
+    process.exit(1);
     options = skr.options;
   });
   console.log("test")
