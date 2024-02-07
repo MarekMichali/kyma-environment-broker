@@ -24,11 +24,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        fetch-depth: 2
 
-    - name: Show diff
+    - name: Process files changed in the current commit
       run: |
-        git diff --name-only
+        changedFiles=$(git diff --name-only HEAD^)
+        for file in $changedFiles; do
+          echo "Processing file: $file"
+        done
         exit 0
 
     - name: Set up go environment
