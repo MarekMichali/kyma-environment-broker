@@ -24,6 +24,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Show diff
+      run: |
+        git diff --name-only
+        exit 1
+
     - name: Set up go environment
       uses: actions/setup-go@v4
       with:
