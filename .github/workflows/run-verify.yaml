@@ -53,7 +53,7 @@ jobs:
       if: steps.changed-files-specific.outputs.any_modified == 'false'
       run: |
         echo "Nothing changed"
-        exit 1
+        exit 0
 
   #  - name: Run step if doc file(s) change
   #    if: steps.changed-files-yaml.outputs.doc_any_modified == 'true'
