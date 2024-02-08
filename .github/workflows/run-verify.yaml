@@ -25,26 +25,37 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Get changed files
-      id: changed-files-yaml
+      id: changed-files-specific
       uses: tj-actions/changed-files@v42
       with:
-        files_yaml: |
-          doc:
-            - '**.md'
-            - docs/**
-          test:
-            - test/**
-            - '!test/**.md'
-          src:
-            - src/**
-
-    - name: Run step if doc file(s) change
-      if: steps.changed-files-yaml.outputs.doc_any_modified == 'true'
-      env:
-        DOC_ALL_CHANGED_FILES: ${{ steps.changed-files-yaml.outputs.doc_all_modified_files }}
+        files: |
+          my-file.txt
+          *.sh
+          *.png
+          !*.md
+          test_directory/**
+          **/*.sql
+      #  files_yaml: |
+      #    doc:
+      #      - '**.md'
+      #      - docs/**
+      #    test:
+      #      - test/**
+      #      - '!test/**.md'
+      #    src:
+      #      - src/**
+    - name: Run step if any of the listed files above change
+      if: steps.changed-files-specific.outputs.any_modified == 'true'
       run: |
-        echo "One or more doc file(s) has changed."
-        echo "List all the files that have changed: $DOC_ALL_CHANGED_FILES"
+        echo "One or more files listed above has changed."
+
+  #  - name: Run step if doc file(s) change
+  #    if: steps.changed-files-yaml.outputs.doc_any_modified == 'true'
+  #    env:
+  #      DOC_ALL_CHANGED_FILES: ${{ steps.changed-files-yaml.outputs.doc_all_modified_files }}
+  #    run: |
+  #      echo "One or more doc file(s) has changed."
+  #      echo "List all the files that have changed: $DOC_ALL_CHANGED_FILES"
 
   #  - name: Check changes
    #   run: |
