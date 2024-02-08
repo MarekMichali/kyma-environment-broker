@@ -29,7 +29,6 @@ jobs:
       uses: tj-actions/changed-files@v42
       with:
         files: |
-          .github/**
           cmd/**
           common/**
           files/**
@@ -43,7 +42,7 @@ jobs:
           go.mod
           go.sum
           Makefile
-          
+
     - name: Set up go environment
       if: steps.changed-files-specific.outputs.any_modified == 'true'
       uses: actions/setup-go@v4
@@ -67,7 +66,6 @@ jobs:
       uses: tj-actions/changed-files@v42
       with:
         files: |
-          .github/**
           cmd/**
           common/**
           files/**
