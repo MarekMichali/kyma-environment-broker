@@ -29,21 +29,8 @@ jobs:
       uses: tj-actions/changed-files@v42
       with:
         files: |
-          .github/**
-          cmd/**
-          common/**
-          files/**
-          internal/**
-          scripts/**
-          utils/**
-          .golangci.yml
-          Dockerfile.job
-          Dockerfile.keb
-          Dockerfile.runtimereconciler
-          go.mod
-          go.sum
           Makefile
-          setup-envtest.sh
+ 
 
       #  files_yaml: |
       #    doc:
