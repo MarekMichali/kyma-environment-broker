@@ -23,16 +23,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 2
 
-    - name: Process files changed in the current commit
+    - name: Check changes
       run: |
-        changedFiles=$(git diff --name-only)
-        for file in $changedFiles; do
-          echo "Processing file: $file"
-        done
-        exit 0
+        curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/MarekMichali/kyma-environment-broker/pulls/${{ github.event.pull_request.number }}/files | jq -r '.[].filename'
 
     - name: Set up go environment
       uses: actions/setup-go@v4
