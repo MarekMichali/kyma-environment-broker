@@ -36,9 +36,9 @@ jobs:
           echo "$file was changed"
         done
 
-    - name: Check changes
-      run: |
-        curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/MarekMichali/kyma-environment-broker/pulls/${{ github.event.pull_request.number }}/files | jq -r '.[].filename'
+  #  - name: Check changes
+   #   run: |
+    #    curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/MarekMichali/kyma-environment-broker/pulls/${{ github.event.pull_request.number }}/files | jq -r '.[].filename'
 
     - name: Set up go environment
       uses: actions/setup-go@v4
