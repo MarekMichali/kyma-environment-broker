@@ -28,3 +28,4 @@ export ENCODED_CREDENTIALS=$(echo -n "$CLIENT_ID:$CLIENT_SECRET" | base64)
 
 curl -ik -X POST $TOKEN_URL -H "Authorization: Basic $ENCODED_CREDENTIALS" --data "grant_type=client_credentials" --data "scope=broker:write"
 ```
+asfassa
