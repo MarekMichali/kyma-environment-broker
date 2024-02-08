@@ -29,13 +29,22 @@ jobs:
       uses: tj-actions/changed-files@v42
       with:
         files: |
-          my-file.txt
-          *.sh
-          *.png
-          !*.md
-          test_directory/**
-          docs/**
-          **/*.sql
+          .github/**
+          cmd/**
+          common/**
+          files/**
+          internal/**
+          scripts/**
+          utils/**
+          .golangci.yml
+          Dockerfile.job
+          Dockerfile.keb
+          Dockerfile.runtimereconciler
+          go.mod
+          go.sum
+          Makefile
+          setup-envtest.sh
+
       #  files_yaml: |
       #    doc:
       #      - '**.md'
@@ -52,6 +61,12 @@ jobs:
       run: |
         echo "One or more files listed above has changed."
         echo "List all the files that have changed: $DOC_ALL_CHANGED_FILES"
+
+    - name: Skip step if any of the listed files above dont' change
+      if: steps.changed-files-specific.outputs.any_modified == 'false'
+      run: |
+        echo "Nothing changed"
+        exit 1
 
   #  - name: Run step if doc file(s) change
   #    if: steps.changed-files-yaml.outputs.doc_any_modified == 'true'
