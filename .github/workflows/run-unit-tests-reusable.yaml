@@ -12,10 +12,31 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Get changed files
+      id: changed-files-specific
+      uses: tj-actions/changed-files@v42
+      with:
+        files: |
+          cmd/**
+          common/**
+          files/**
+          internal/**
+          scripts/**
+          utils/**
+          .golangci.yml
+          Dockerfile.job
+          Dockerfile.keb
+          Dockerfile.runtimereconciler
+          go.mod
+          go.sum
+          Makefile
+
     - name: Set up go environment
+      if: steps.changed-files-specific.outputs.any_modified == 'true'
       uses: actions/setup-go@v4
       with:
         go-version-file: 'go.mod'
 
     - name: Run unit tests
+      if: steps.changed-files-specific.outputs.any_modified == 'true'
       run: make test
