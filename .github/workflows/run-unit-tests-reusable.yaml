@@ -46,5 +46,5 @@ jobs:
         go-version-file: 'go.mod'
 
     - name: Run unit tests
-      if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' ||  inputs.release  }}
+      if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' ||  inputs.release }}
       run: make test
