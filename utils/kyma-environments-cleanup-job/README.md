@@ -17,4 +17,4 @@ The manifest contains three placeholders for values which are set by the shell s
 
 The values are derived from Kyma Environment Broker Deployment which should be running in the cluster prior to the CronJob application.
 
-Run `apply.sh` script to apply the CronJob into the cluster.
+Run `apply.sh` script to apply the CronJob into the cluster.aaa
