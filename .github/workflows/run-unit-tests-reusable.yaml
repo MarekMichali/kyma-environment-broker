@@ -3,6 +3,11 @@
 name: Run unit tests (reusable)
 on:
   workflow_call:
+    inputs:
+      release:
+        type: boolean
+        description: 'Determines if the workflow is called from release'
+        default: true
 
 jobs:
   build:
@@ -32,11 +37,11 @@ jobs:
           Makefile
 
     - name: Set up go environment
-      if: steps.changed-files-specific.outputs.any_modified == 'true'
+      if: steps.changed-files-specific.outputs.any_modified == 'true' ||  inputs.release == 'true'
       uses: actions/setup-go@v4
       with:
         go-version-file: 'go.mod'
 
     - name: Run unit tests
-      if: steps.changed-files-specific.outputs.any_modified == 'true'
+      if: steps.changed-files-specific.outputs.any_modified == 'true' ||  inputs.release == 'true'
       run: make test

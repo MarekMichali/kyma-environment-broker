@@ -17,6 +17,8 @@ permissions:
 jobs:
   run-go-tests:
     uses: "./.github/workflows/run-unit-tests-reusable.yaml"
+    with:
+      release: false
 
   run-go-linter:
     runs-on: ubuntu-latest
