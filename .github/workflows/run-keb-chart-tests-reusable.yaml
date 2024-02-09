@@ -8,6 +8,10 @@ on:
         required: false
         default: 1
         type: string
+      release:
+        type: boolean
+        description: 'Determines if the workflow is called from release'
+        default: true
 
 jobs:
   validate-keb-helm-chart:
@@ -15,6 +19,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Get changed files
+      id: changed-files-specific
+      uses: tj-actions/changed-files@90a06d6ba9543371ab4df8eeca0be07ca6054959
+      with:
+        files: |
+          resources/**
 
     - name: Validate KEB helm chart
       run: |
@@ -30,8 +41,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Get changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@90a06d6ba9543371ab4df8eeca0be07ca6054959
+        with:
+          files: |
+            resources/**
+
       - id: get-versions
         name: Get K3s versions
+        if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release }}
         # prepare json representing GitHub matrix:
         # {"include": [
         #    {"version":"v1.26.10+k3s1"},
@@ -54,25 +73,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Get changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@90a06d6ba9543371ab4df8eeca0be07ca6054959
+        with:
+          files: |
+            resources/**
+
       - name: Prepare K3s cluster and docker registry
+        if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release }}
         run: "./scripts/testing/k3s-setup.sh ${{ matrix.version }} --wait"
 
       - name: Create namespaces
+        if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release }}
         run: |
           kubectl create namespace kcp-system
           kubectl create namespace kyma-system
           kubectl create namespace istio-system
 
       - name: Install istio
+        if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release }}
         run: |
           helm repo add istio https://istio-release.storage.googleapis.com/charts
           helm install istio-base istio/base -n istio-system --set defaultRevision=default
           
       - name: Install Prometheus Operator for ServiceMonitor
+        if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release }}
         run: |
           kubectl create -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/master/bundle.yaml
 
       - name: Deploy KEB helm chart
+        if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release }}
         run: |
           cd resources/keb
           helm template . | kubectl apply -f -

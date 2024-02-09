@@ -134,6 +134,7 @@ jobs:
     secrets: inherit
     with:
       last-k3s-versions: ${{ vars.LAST_K3S_VERSIONS }}
+      release: true
 
   create-draft:
     name: Create draft release
