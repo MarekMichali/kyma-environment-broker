@@ -37,7 +37,7 @@ jobs:
           Makefile
 
     - name: echo
-      run: echo '${{ inputs.release }}'
+      run: echo '${{ inputs.release }}, modified ${{ steps.changed-files-specific.outputs.any_modified }}'
 
     - name: Set up go environment
       if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' ||  inputs.release == 'true' }}
