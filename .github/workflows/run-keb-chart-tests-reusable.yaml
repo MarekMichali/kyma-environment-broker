@@ -124,7 +124,18 @@ jobs:
     if: always()
     needs: confirm-keb-chart-tests-result
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@90a06d6ba9543371ab4df8eeca0be07ca6054959
+        with:
+          files: |
+            resources/**
+
       - name: Check KEB chart tests result
+        if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release }}
         run: |
           if [ "${{ needs.confirm-keb-chart-tests-result.outputs.success }}" != "true" ]; then
             echo "KEB chart tests failed"
