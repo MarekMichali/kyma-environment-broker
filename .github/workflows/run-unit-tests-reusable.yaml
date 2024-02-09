@@ -36,6 +36,9 @@ jobs:
           go.sum
           Makefile
 
+    - name: echo
+      run: echo '${{ inputs.release }}'
+
     - name: Set up go environment
       if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' ||  inputs.release == 'true' }}
       uses: actions/setup-go@v4
