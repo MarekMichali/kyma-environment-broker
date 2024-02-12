@@ -18,6 +18,8 @@ jobs:
       with:
         files: |
           testing/e2e/skr/**
+          scripts/**
+          Makefile
 
     - name: Run JS linter
       if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' }}

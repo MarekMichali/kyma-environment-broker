@@ -26,6 +26,8 @@ jobs:
       with:
         files: |
           resources/**
+          scripts/**
+          Makefile
 
     - name: Validate KEB helm chart
       run: |
@@ -47,6 +49,8 @@ jobs:
         with:
           files: |
             resources/**
+            scripts/**
+            Makefile
 
       - id: get-versions
         name: Get K3s versions
@@ -79,6 +83,8 @@ jobs:
         with:
           files: |
             resources/**
+            scripts/**
+            Makefile
 
       - name: Prepare K3s cluster and docker registry
         if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release == 'true' }}
@@ -133,6 +139,8 @@ jobs:
         with:
           files: |
             resources/**
+            scripts/**
+            Makefile
 
       - name: Check KEB chart tests result
         if: ${{ steps.changed-files-specific.outputs.any_modified == 'true' || inputs.release == 'true' }}
