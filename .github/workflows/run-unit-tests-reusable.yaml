@@ -27,7 +27,7 @@ jobs:
           files/**
           internal/**
           scripts/**
-          utils/**
+          utils/edp-registrator/**
           .golangci.yml
           Dockerfile.job
           Dockerfile.keb
