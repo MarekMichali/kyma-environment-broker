@@ -125,7 +125,7 @@ jobs:
     needs: validate-release
     uses: "./.github/workflows/run-unit-tests-reusable.yaml"
     with:
-      release: true
+      release: "true"
 
   run-keb-chart-tests:
     name: Validate KEB chart 
@@ -134,7 +134,7 @@ jobs:
     secrets: inherit
     with:
       last-k3s-versions: ${{ vars.LAST_K3S_VERSIONS }}
-      release: true
+      release: "true"
 
   create-draft:
     name: Create draft release
