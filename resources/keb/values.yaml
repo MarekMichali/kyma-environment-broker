@@ -17,7 +17,7 @@ global:
       version: "1.2.5"
     kyma_environment_trial_cleanup_job:
       dir:
-      version: "1.2.0"
+      version: "1.2.2"
     kyma_environment_deprovision_retrigger_job:
       dir:
       version: "1.2.0"
