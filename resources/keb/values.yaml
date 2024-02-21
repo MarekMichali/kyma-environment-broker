@@ -23,7 +23,7 @@ global:
       version: "1.2.0"
     kyma_environment_runtime_reconciler:
       dir:
-      version: "1.2.0"
+      version: "1.2.6"
   kyma_environment_broker:
     enabled: false
     serviceAccountName: "kcp-kyma-environment-broker"
