@@ -136,6 +136,7 @@ jobs:
     with:
       last-k3s-versions: ${{ vars.LAST_K3S_VERSIONS }}
       release: "true"
+      version: ${{ inputs.name }}
 
   create-draft:
     name: Create draft release
