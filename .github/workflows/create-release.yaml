@@ -186,7 +186,9 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ needs.bump-sec-scanners-config.outputs.latest_commit}}
-      - run: git pull
+      - run: |
+          git checkout main
+          git pull
 
       - name: Bump KEB chart
         run: scripts/bump_keb.sh ${{ inputs.name }}
