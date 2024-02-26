@@ -256,7 +256,7 @@ jobs:
           OUTPUT=$(helm package ./resources/keb -d ./resources)
           FILENAME_WITH_PATH=$(echo $OUTPUT | grep -o 'resources/.*')
           FILENAME=$(basename $FILENAME_WITH_PATH)
-          echo "KEB_CHART=FILENAME" >> $GITHUB_ENV
+          echo "KEB_CHART=$FILENAME" >> $GITHUB_ENV
         
       - name: Upload chart to release
         run: ./scripts/upload_assets.sh ${{ needs.create-draft.outputs.release_id }} $KEB_CHART
