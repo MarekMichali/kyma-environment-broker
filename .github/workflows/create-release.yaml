@@ -236,9 +236,34 @@ jobs:
     outputs:
       latest_commit: ${{ steps.pull-ref.outputs.latest_commit }}
 
+  publish-keb-chart:
+    name: Publish KEB chart
+    needs: [bump-keb-chart, create-draft]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.bump-keb-chart.outputs.latest_commit}}
+      - run: |
+          git checkout main
+          git pull
+
+      - name: Package KEB chart
+        run: |
+          OUTPUT=$(helm package ./resources/keb -d ./resources)
+          FILENAME_WITH_PATH=$(echo $OUTPUT | grep -o 'resources/.*')
+          FILENAME=$(basename $FILENAME_WITH_PATH)
+          echo "KEB_CHART=FILENAME" >> $GITHUB_ENV
+        
+      - name: Upload chart to release
+        run: ./scripts/upload_assets.sh ${{ needs.create-draft.outputs.release_id }} $KEB_CHART
+
   publish-release:
     name: Publish release
-    needs: [create-draft, run-unit-tests, run-keb-chart-tests, bump-keb-chart]
+    needs: [create-draft, run-unit-tests, run-keb-chart-tests, bump-keb-chart, publish-keb-chart]
     if: ${{ !inputs.dry-run }}
     runs-on: ubuntu-latest
 
