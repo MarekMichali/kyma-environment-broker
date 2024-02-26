@@ -259,6 +259,8 @@ jobs:
           echo "KEB_CHART=$FILENAME" >> $GITHUB_ENV
         
       - name: Upload chart to release
+        env:
+          BOT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./scripts/upload_assets.sh ${{ needs.create-draft.outputs.release_id }} $KEB_CHART
 
   publish-release:
