@@ -271,6 +271,7 @@ jobs:
           git checkout gh-pages
           git add index.yaml
           git commit -m "Bump helm index"
+          git push origin gh-pages
 
   publish-release:
     name: Publish release
