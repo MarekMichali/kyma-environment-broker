@@ -238,7 +238,7 @@ jobs:
 
   publish-release:
     name: Publish release
-    needs: [create-draft, run-unit-tests, run-keb-chart-tests, bump-keb-chart, publish-keb-chart]
+    needs: [create-draft, run-unit-tests, run-keb-chart-tests, bump-keb-chart]
     if: ${{ !inputs.dry-run }}
     runs-on: ubuntu-latest
 
