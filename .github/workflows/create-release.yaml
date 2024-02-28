@@ -264,11 +264,12 @@ jobs:
         run: ./scripts/upload_assets.sh ${{ needs.create-draft.outputs.release_id }} $KEB_CHART
 
       - name: Create helm index
-        run: helm repo index --url https://marekmichali.github.io/kyma-environment-broker/ --merge ./resources/index.yaml .
-
-      - name: Commit helm intex to gh-pgages
         run: |
           git checkout gh-pages
+          helm repo index --url https://marekmichali.github.io/kyma-environment-broker/ --merge ./resources/index.yaml .
+
+      - name: Commit helm inted to gh-pgages
+        run: |
           git add index.yaml
           git commit -m "Bump helm index"
           git push origin gh-pages
