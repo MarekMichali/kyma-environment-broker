@@ -36,7 +36,7 @@ uploadFile() {
   fi
 }
 
-KEB_CHART_PATH="./resources/$KEB_CHART"
+KEB_CHART_PATH="./$KEB_CHART"
 UPLOAD_URL="https://uploads.github.com/repos/MarekMichali/kyma-environment-broker/releases/${RELEASE_ID}/assets"
 
 echo -e "\n--- Updating GitHub release ${RELEASE_ID} with ${KEB_CHART} asset"
