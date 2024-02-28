@@ -253,9 +253,8 @@ jobs:
 
       - name: Package KEB chart
         run: |
-          OUTPUT=$(helm package ./resources/keb -d ./resources)
-          FILENAME_WITH_PATH=$(echo $OUTPUT | grep -o 'resources/.*')
-          FILENAME=$(basename $FILENAME_WITH_PATH)
+          OUTPUT=$(helm package ./resources/keb -d ./)
+          FILENAME=$(echo $OUTPUT | grep -o '[^ ]*.tgz')
           echo "KEB_CHART=$FILENAME" >> $GITHUB_ENV
         
       - name: Upload chart to release
@@ -266,7 +265,7 @@ jobs:
       - name: Create helm index
         run: |
           git checkout gh-pages
-          helm repo index --url https://marekmichali.github.io/kyma-environment-broker/ --merge ./resources/index.yaml .
+          helm repo index --url https://marekmichali.github.io/kyma-environment-broker/ --merge ./index.yaml ./
 
       - name: Commit helm inted to gh-pgages
         run: |
