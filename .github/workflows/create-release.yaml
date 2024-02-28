@@ -267,7 +267,7 @@ jobs:
       - name: Create helm index
         run: |
           git checkout gh-pages
-          helm repo index --url https://marekmichali.github.io/kyma-environment-broker/ --merge ./index.yaml ./
+          helm repo index --url https://marekmichali.github.io/kyma-environment-broker/releases/download/${{ inputs.name }}/$KEB_CHART --merge ./index.yaml ./
 
       - name: Commit helm index to gh-pgages
         run: |
