@@ -270,6 +270,8 @@ jobs:
 
       - name: Commit helm inted to gh-pgages
         run: |
+          git config --global user.email ${{ env.GIT_EMAIL }}
+          git config --global user.name ${{ env.GIT_NAME }}
           git add index.yaml
           git commit -m "Bump helm index"
           git push origin gh-pages
