@@ -236,9 +236,10 @@ jobs:
     outputs:
       latest_commit: ${{ steps.pull-ref.outputs.latest_commit }}
 
-  publish-keb-chart:
-    name: Publish KEB chart
-    needs: [bump-keb-chart, create-draft]
+  publish-release:
+    name: Publish release
+    needs: [create-draft, run-unit-tests, run-keb-chart-tests, bump-keb-chart, publish-keb-chart]
+    if: ${{ !inputs.dry-run }}
     runs-on: ubuntu-latest
 
     steps:
@@ -247,6 +248,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ needs.bump-keb-chart.outputs.latest_commit}}
+
       - run: |
           git checkout main
           git pull
@@ -267,25 +269,13 @@ jobs:
           git checkout gh-pages
           helm repo index --url https://marekmichali.github.io/kyma-environment-broker/ --merge ./index.yaml ./
 
-      - name: Commit helm inted to gh-pgages
+      - name: Commit helm index to gh-pgages
         run: |
           git config --global user.email ${{ env.GIT_EMAIL }}
           git config --global user.name ${{ env.GIT_NAME }}
           git add index.yaml
           git commit -m "Bump helm index"
           git push origin gh-pages
-
-  publish-release:
-    name: Publish release
-    needs: [create-draft, run-unit-tests, run-keb-chart-tests, bump-keb-chart, publish-keb-chart]
-    if: ${{ !inputs.dry-run }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Publish release
         env:
