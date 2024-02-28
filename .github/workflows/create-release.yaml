@@ -249,6 +249,33 @@ jobs:
           fetch-depth: 0
           ref: ${{ needs.bump-keb-chart.outputs.latest_commit}}
 
+      - run: |
+          git checkout main
+          git pull
+
+      - name: Package KEB chart
+        run: |
+          OUTPUT=$(helm package ./resources/keb -d ./)
+          FILENAME=$(echo $OUTPUT | grep -o '[^ ]*.tgz')
+          echo "KEB_CHART=$FILENAME" >> $GITHUB_ENV
+        
+      - name: Upload chart to release
+        env:
+          BOT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/upload_assets.sh ${{ needs.create-draft.outputs.release_id }} $KEB_CHART
+
+      - name: Create helm index
+        run: |
+          git checkout gh-pages
+          helm repo index --url https://marekmichali.github.io/kyma-environment-broker/ --merge ./index.yaml ./
+
+      - name: Commit helm index to gh-pgages
+        run: |
+          git config --global user.email ${{ env.GIT_EMAIL }}
+          git config --global user.name ${{ env.GIT_NAME }}
+          git add index.yaml
+          git commit -m "Bump helm index"
+          git push origin gh-pages
 
       - name: Publish release
         env:
