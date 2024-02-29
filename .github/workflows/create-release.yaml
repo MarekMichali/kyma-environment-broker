@@ -6,7 +6,7 @@ env:
   KYMA_ENVIRONMENT_BROKER_REPO: ${{ github.repository_owner }}/kyma-environment-broker
   GIT_EMAIL: mareksm99@gmail.com
   GIT_NAME: MarekMichali
-  BRANCH_NAME: sec-scanners-config-${{ inputs.name }}
+  BUMP_SEC_SCANNERS_BRANCH_NAME: sec-scanners-config-${{ inputs.name }}
   BUMP_KEB_BRANCH_NAME: bump-keb-${{ inputs.name }}
 
 on:
@@ -83,9 +83,9 @@ jobs:
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
           prs=$(gh pr list -A ${{ env.GIT_NAME }} --state open --json headRefName | jq -r '.[] | .headRefName')
-          if echo $prs | tr " " '\n' | grep -F -q -x ${{ env.BRANCH_NAME }}; then
+          if echo $prs | tr " " '\n' | grep -F -q -x ${{ env.BUMP_SEC_SCANNERS_BRANCH_NAME }}; then
             echo "PR already exists, no need to create a new one"
-            echo "PR_NUMBER=$(gh pr list --search "base:main head:${{ env.BRANCH_NAME }}" --json number | jq -r '.[] | .number')" >> $GITHUB_ENV
+            echo "PR_NUMBER=$(gh pr list --search "base:main head:${{ env.BUMP_SEC_SCANNERS_BRANCH_NAME }}" --json number | jq -r '.[] | .number')" >> $GITHUB_ENV
           elif [ -z "$(git status --porcelain)" ]; then
             echo "Nothing changed, no need to create PR"
             echo "PR_NUMBER=-1" >> $GITHUB_ENV
@@ -192,7 +192,7 @@ jobs:
           git pull
 
       - name: Bump KEB chart
-        run: scripts/bump_keb.sh ${{ inputs.name }}
+        run: scripts/bump_keb_chart.sh ${{ inputs.name }}
 
       - name: Create PR if anything changed
         env:
@@ -206,7 +206,7 @@ jobs:
             echo "Nothing changed, no need to create PR"
             echo "PR_NUMBER=-1" >> $GITHUB_ENV
           else
-            PR_STATUS=$(scripts/bump_keb_pr.sh ${{ inputs.name }})
+            PR_STATUS=$(scripts/create_bump_keb_chart_pr.sh ${{ inputs.name }})
             echo "PR_NUMBER=$(echo "$PR_STATUS" | tail -n 1)" >> $GITHUB_ENV
           fi
 
@@ -248,7 +248,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ needs.bump-keb-chart.outputs.latest_commit}}
-
       - run: |
           git checkout main
           git pull
@@ -259,17 +258,17 @@ jobs:
           FILENAME=$(echo $OUTPUT | grep -o '[^ ]*.tgz')
           echo "KEB_CHART=$FILENAME" >> $GITHUB_ENV
         
-      - name: Upload chart to release
+      - name: Upload packaged KEB chart to release
         env:
           BOT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./scripts/upload_assets.sh ${{ needs.create-draft.outputs.release_id }} $KEB_CHART
 
-      - name: Create helm index
+      - name: Update KEB chart metadata
         run: |
           git checkout gh-pages
           helm repo index --url https://github.com/MarekMichali/kyma-environment-broker/releases/download/${{ inputs.name }} --merge ./index.yaml ./
 
-      - name: Commit helm index to gh-pgages
+      - name: Commit KEB chart metadata to gh-pages branch
         run: |
           git config --global user.email ${{ env.GIT_EMAIL }}
           git config --global user.name ${{ env.GIT_NAME }}

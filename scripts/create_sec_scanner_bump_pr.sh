@@ -12,7 +12,7 @@ set -o pipefail # prevents errors in a pipeline from being masked
 #   GIT_EMAIL                     - email setting for PR to be created
 #   GIT_NAME                      - user name setting for PR to be created
 #   KYMA_ENVIRONMENT_BROKER_REPO  - Kyma repository
-#   BRANCH_NAME                   - branch with updated sec-scanners-config
+#   BUMP_SEC_SCANNERS_BRANCH_NAME - branch with updated sec-scanners-config
 
 TAG=$1
 
@@ -24,7 +24,7 @@ git stash push --staged
 
 #pass changes to branch created from main
 git checkout --force -B main refs/remotes/origin/main
-git checkout -B ${BRANCH_NAME}
+git checkout -B ${BUMP_SEC_SCANNERS_BRANCH_NAME}
 
 #apply stashed changes
 git stash apply
@@ -37,7 +37,7 @@ git config --global user.name ${GIT_NAME}
 #commit and push changes
 git commit -m "Bump sec-scanners-config.yaml to ${TAG}"
 git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${KYMA_ENVIRONMENT_BROKER_REPO}.git
-git push --set-upstream origin ${BRANCH_NAME} -f
+git push --set-upstream origin ${BUMP_SEC_SCANNERS_BRANCH_NAME} -f
 
 #create PR
 pr_link=$(gh pr create -B main --title "Bump sec-scanners-config.yaml to ${TAG}" --body "" | tail -n 1)

@@ -2,7 +2,8 @@
 
 # This script has the following argument:
 #     - releaseID (mandatory)
-# ./upload_assets.sh 12345678
+#     - packed KEB Chart path name (mandatory)
+# ./upload_assets.sh 12345678 keb-0.0.0.tgz
 
 RELEASE_ID=${1}
 KEB_CHART=${2}
@@ -14,8 +15,7 @@ set -E          # needs to be set if we want the ERR trap
 set -o pipefail # prevents errors in a pipeline from being masked
 
 # Expected variables:
-#   PULL_BASE_REF - name of the tag
-#   BOT_GITHUB_TOKEN - github token used to upload the template yaml
+#   BOT_GITHUB_TOKEN - github token used to upload the asset
 
 uploadFile() {
   filePath=${1}
