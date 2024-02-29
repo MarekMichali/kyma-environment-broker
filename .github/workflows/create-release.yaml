@@ -273,7 +273,7 @@ jobs:
           git config --global user.email ${{ env.GIT_EMAIL }}
           git config --global user.name ${{ env.GIT_NAME }}
           git add index.yaml
-          git commit -m "Bump helm index"
+          git commit -m "Update KEB chart metadata with version ${{ inputs.name }}"
           git push origin gh-pages
 
       - name: Publish release
