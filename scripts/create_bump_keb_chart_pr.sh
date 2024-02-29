@@ -44,7 +44,7 @@ git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${KYMA_E
 git push --set-upstream origin ${BUMP_KEB_BRANCH_NAME} -f
 
 #create PR
-pr_link=$(gh pr create -B main --title "Bump KEB images and Chart to ${TAG}" --body "" | tail -n 1)
+pr_link=$(gh pr create -B main --title "Bump KEB images and Chart to ${TAG}" --body "https://github.com/${KYMA_BTP_MANAGER_REPO}/releases/tag/${TAG}" | tail -n 1)
 echo "Link for created PR: ${pr_link}"
 
 pr_number=$(echo "$pr_link" | awk -F'/' '{print $NF}')
