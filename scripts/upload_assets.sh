@@ -41,6 +41,6 @@ UPLOAD_URL="https://uploads.github.com/repos/MarekMichali/kyma-environment-broke
 
 echo -e "\n--- Updating GitHub release ${RELEASE_ID} with ${KEB_CHART} asset"
 
-[[ ! -e ${$KEB_CHART} ]] && echo "::error ::Packaged KEB chart does not exist" && exit 1
+[[ ! -e ${KEB_CHART} ]] && echo "::error ::Packaged KEB chart does not exist" && exit 1
 
-uploadFile "${$KEB_CHART}" "${UPLOAD_URL}?name=${KEB_CHART}"
+uploadFile "${KEB_CHART}" "${UPLOAD_URL}?name=${KEB_CHART}"
