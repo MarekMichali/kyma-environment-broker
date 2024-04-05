@@ -134,7 +134,10 @@ jobs:
           echo "Latest commit ref $LATEST_COMMIT"
 
       - name: Delete ${{ env.BUMP_CHART_AND_IMAGES }} branch
-        run: git push origin --delete ${{ env.BUMP_CHART_AND_IMAGES }}
+        run: |
+          git config --global user.email ${{ env.GIT_EMAIL }}
+          git config --global user.name ${{ env.GIT_NAME }}
+          git push origin --delete ${{ env.BUMP_CHART_AND_IMAGES }}
 
     outputs:
       latest_commit: ${{ steps.pull-ref.outputs.latest_commit }}
