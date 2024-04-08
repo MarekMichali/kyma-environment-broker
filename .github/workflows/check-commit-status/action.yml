@@ -1,0 +1,21 @@
+name: 'Check commit status'
+inputs:
+  statusName:
+    description: 'Name of the commit status to check'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Wait for commit status
+      uses: autotelic/action-wait-for-status-check@6556cf50c8fb6608412945382eae73581f56cbb4
+      id: wait
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        statusName: ${{ inputs.statusName }}
+        timeoutSeconds: "60"
+        ref: ${{ needs.bumps.outputs.latest_commit}}
+    - name: Check if commit status is not success
+      if: steps.wait.outputs.state != 'success'
+      run: |
+        echo '${{ inputs.statusName }} failed.'
+        exit 1
