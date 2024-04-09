@@ -10,6 +10,7 @@ runs:
   using: "composite"
   steps:
     - name: Print inputs
+      shell: bash
       run: |
         echo "statusName: ${{ inputs.statusName }}"
         echo "testVaL: ${{ inputs.testVaL }}"
