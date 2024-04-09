@@ -177,37 +177,43 @@ jobs:
         uses: ./.github/workflows/check-commit-status
         with:
           statusName: "post-keb-release-build"
-          testVaL: ${{ secrets.DUMMY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          commitRef: ${{ needs.bumps.outputs.latest_commit }}
 
       - name: Check post-keb-runtime-reconciler-job-release-build status
         uses: ./.github/workflows/check-commit-status
         with:
           statusName: "post-keb-runtime-reconciler-job-release-build"
-          testVaL: ${{ secrets.DUMMY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          commitRef: ${{ needs.bumps.outputs.latest_commit }}
 
       - name: Check post-keb-subaccount-cleanup-job-release-build status
         uses: ./.github/workflows/check-commit-status
         with:
           statusName: "post-keb-subaccount-cleanup-job-release-build"
-          testVaL: ${{ secrets.DUMMY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          commitRef: ${{ needs.bumps.outputs.latest_commit }}
 
       - name: Check post-keb-trial-cleanup-job-release-build status
         uses: ./.github/workflows/check-commit-status
         with:
           statusName: "post-keb-trial-cleanup-job-release-build"
-          testVaL: ${{ secrets.DUMMY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          commitRef: ${{ needs.bumps.outputs.latest_commit }}
 
       - name: Check post-keb-cleanup-job-release-build status
         uses: ./.github/workflows/check-commit-status
         with:
           statusName: "post-keb-cleanup-job-release-build"
-          testVaL: ${{ secrets.DUMMY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          commitRef: ${{ needs.bumps.outputs.latest_commit }}
 
       - name: Check post-keb-deprovision-retrigger-job-release-build status
         uses: ./.github/workflows/check-commit-status
         with:
           statusName: "post-keb-deprovision-retrigger-job-release-build"
-          testVaL: ${{ secrets.DUMMY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          commitRef: ${{ needs.bumps.outputs.latest_commit }}
 
   publish-release:
     name: Publish release
