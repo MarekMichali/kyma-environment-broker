@@ -1,7 +1,7 @@
 apiVersion: v2
-appVersion: "PR-753"
+appVersion: "0.0.0-PR-753"
 name: keb
 description:
 description: Kyma Environment Broker Helm chart for Kubernetes
-version: PR-753
+version: 0.0.0-PR-753
 type: application
