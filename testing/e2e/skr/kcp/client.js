@@ -20,8 +20,8 @@ class KCPConfig {
     this.password = getEnvOrThrow('KCP_TECH_USER_PASSWORD');
     this.clientID = getEnvOrThrow('KCP_OIDC_CLIENT_ID');
 
-    if (process.env.KCP_OIDC_CLIENT_SECRET) {
-      this.clientSecret = getEnvOrThrow('KCP_OIDC_CLIENT_SECRET');
+    if (process.env.KCP_OIDC_CLIENT_SECRETV2) {
+      this.clientSecret = getEnvOrThrow('KCP_OIDC_CLIENT_SECRETV2');
     } else {
       this.oauthClientID = getEnvOrThrow('KCP_OAUTH2_CLIENT_ID');
       this.oauthSecret = getEnvOrThrow('KCP_OAUTH2_CLIENT_SECRET');
@@ -55,7 +55,7 @@ class KCPWrapper {
     const stream = fs.createWriteStream(`${this.kcpConfigPath}`);
     stream.once('open', (_) => {
       stream.write(`gardener-namespace: "${this.gardenerNamespace}"\n`);
-      if (process.env.KCP_OIDC_CLIENT_SECRET) {
+      if (process.env.KCP_OIDC_CLIENT_SECRETV2) {
         stream.write(`oidc-client-id: "${this.clientID}"\n`);
         stream.write(`oidc-client-secret: ${this.clientSecret}\n`);
         stream.write(`username: ${this.username}\n`);
@@ -108,7 +108,7 @@ class KCPWrapper {
 
   async login() {
     let args;
-    if (process.env.KCP_OIDC_CLIENT_SECRET) {
+    if (process.env.KCP_OIDC_CLIENT_SECRETV2) {
       args = ['login', '-u', `${this.username}`, '-p', `${this.password}`];
     } else {
       args = ['login'];
