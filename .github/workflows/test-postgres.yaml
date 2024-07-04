@@ -34,9 +34,9 @@ jobs:
       - name: Connect to PostgreSQL
         # Runs a bash script that connects to PostgreSQL
         run: |
-          psql -h localhost -p 5432 -U postgres -d mydatabase -c "CREATE TABLE student(id SERIAL PRIMARY KEY, firstName VARCHAR(40) NOT NULL, lastName VARCHAR(40) NOT NULL, age INT, address VARCHAR(80), email VARCHAR(40));"
-          psql -h localhost -p 5432 -U postgres -d mydatabase -c "INSERT INTO student(firstname, lastname, age, address, email) VALUES('Mona the', 'Octocat', 9, '88 Colin P Kelly Jr St, San Francisco, CA 94107, United States', 'octocat@github.com') RETURNING *;"
-          psql -h localhost -p 5432 -U postgres -d mydatabase -c "SELECT * FROM student;" 
+          psql -h localhost -p 5432 -U postgres -d postgres -c "CREATE TABLE student(id SERIAL PRIMARY KEY, firstName VARCHAR(40) NOT NULL, lastName VARCHAR(40) NOT NULL, age INT, address VARCHAR(80), email VARCHAR(40));"
+          psql -h localhost -p 5432 -U postgres -d postgres -c "INSERT INTO student(firstname, lastname, age, address, email) VALUES('Mona the', 'Octocat', 9, '88 Colin P Kelly Jr St, San Francisco, CA 94107, United States', 'octocat@github.com') RETURNING *;"
+          psql -h localhost -p 5432 -U postgres -d postgres -c "SELECT * FROM student;" 
         # Environment variables used by the bash script to connect to PostgreSQL
         env:
           # The hostname used to communicate with the PostgreSQL service container
