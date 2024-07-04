@@ -31,19 +31,21 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      # Performs a clean installation of all dependencies in the `package.json` file
-      # For more information, see https://docs.npmjs.com/cli/ci.html
-      - name: Install dependencies
-        run: npm ci
-
       - name: Connect to PostgreSQL
-        # Runs a script that creates a PostgreSQL table, populates
-        # the table with data, and then retrieves the data
-        run: node client.js
-        # Environment variables used by the `client.js` script to create
-        # a new PostgreSQL table.
+        # Runs a bash script that connects to PostgreSQL
+        run: |
+          psql -h localhost -p 5432 -U postgres -d mydatabase -c "CREATE TABLE student(id SERIAL PRIMARY KEY, firstName VARCHAR(40) NOT NULL, lastName VARCHAR(40) NOT NULL, age INT, address VARCHAR(80), email VARCHAR(40));"
+          psql -h localhost -p 5432 -U postgres -d mydatabase -c "INSERT INTO student(firstname, lastname, age, address, email) VALUES('Mona the', 'Octocat', 9, '88 Colin P Kelly Jr St, San Francisco, CA 94107, United States', 'octocat@github.com') RETURNING *;"
+          psql -h localhost -p 5432 -U postgres -d mydatabase -c "SELECT * FROM student;" 
+        # Environment variables used by the bash script to connect to PostgreSQL
         env:
           # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: localhost
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
+          # The PostgreSQL username
+          POSTGRES_USER: postgres
+          # The PostgreSQL password
+          POSTGRES_PASSWORD: postgres
+          # The name of the database to connect to
+          POSTGRES_DB: mydatabase
