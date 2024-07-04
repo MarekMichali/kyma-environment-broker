@@ -49,3 +49,4 @@ jobs:
           POSTGRES_PASSWORD: postgres
           # The name of the database to connect to
           POSTGRES_DB: mydatabase
+          PGPASSWORD: postgres
