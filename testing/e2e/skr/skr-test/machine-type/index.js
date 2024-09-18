@@ -106,7 +106,7 @@ async function getMachineType(gardener, shoot, instanceID) {
     return sh.spec.provider.workers[0].machine.type;
   }
 
-  const sh = await getShoot(kcp, shoot, instanceID);
+  const sh = await getShoot(keb, kcp, shoot, instanceID);
   return sh.machineType;
 }
 

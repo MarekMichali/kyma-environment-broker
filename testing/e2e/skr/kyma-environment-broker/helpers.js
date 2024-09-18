@@ -39,7 +39,7 @@ async function provisionSKR(
     debug(`Compass ID ${shoot.compassID}`);
   } else {
     debug('Fetching shoot info using kcp cli...');
-    shoot = await getShoot(kcp, objRuntimeStatus.data[0].shootName, instanceID);
+    shoot = await getShoot(keb, kcp, objRuntimeStatus.data[0].shootName, instanceID);
   }
 
   return {
@@ -48,7 +48,7 @@ async function provisionSKR(
   };
 }
 
-async function getShoot(kcp, shootName, instanceID) {
+async function getShoot(keb, kcp, shootName, instanceID) {
   debug(`Fetching shoot: ${shootName}`);
 
   //const kubeconfigPath = await kcp.getKubeconfig(shootName);
@@ -128,7 +128,7 @@ async function updateSKR(keb,
   if (process.env['GARDENER_KUBECONFIG']) {
     shoot = await gardener.getShoot(shootName);
   } else {
-    shoot = await getShoot(kcp, shootName, instanceID);
+    shoot = await getShoot(keb, kcp, shootName, instanceID);
   }
 
   return {
