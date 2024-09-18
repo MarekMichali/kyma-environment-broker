@@ -39,7 +39,7 @@ async function provisionSKR(
     debug(`Compass ID ${shoot.compassID}`);
   } else {
     debug('Fetching shoot info using kcp cli...');
-    shoot = await getShoot(kcp, objRuntimeStatus.data[0].shootName);
+    shoot = await getShoot(kcp, objRuntimeStatus.data[0].shootName, instanceID);
   }
 
   return {
@@ -48,11 +48,11 @@ async function provisionSKR(
   };
 }
 
-async function getShoot(kcp, shootName) {
+async function getShoot(kcp, shootName, instanceID) {
   debug(`Fetching shoot: ${shootName}`);
 
-  const kubeconfigPath = await kcp.getKubeconfig(shootName);
-
+  //const kubeconfigPath = await kcp.getKubeconfig(shootName);
+  const kubeconfigPath = await keb.createBinding(instanceID);
   // try to get data from Provisioner (GardenerConfig) and Runtime resource
   const runtimeGardenerConfig = await kcp.getRuntimeGardenerConfig(shootName);
   const objRuntimeGardenerConfig = JSON.parse(runtimeGardenerConfig);
@@ -128,7 +128,7 @@ async function updateSKR(keb,
   if (process.env['GARDENER_KUBECONFIG']) {
     shoot = await gardener.getShoot(shootName);
   } else {
-    shoot = await getShoot(kcp, shootName);
+    shoot = await getShoot(kcp, shootName, instanceID);
   }
 
   return {

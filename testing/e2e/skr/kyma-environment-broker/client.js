@@ -189,6 +189,20 @@ class KEBClient {
     }
   }
 
+  async createBinding(instanceID) {
+    const payload = {
+      service_id: KYMA_SERVICE_ID,
+      plan_id: this.planID
+    };
+
+    const endpoint = `service_instances/${instanceID}/service_bindings/1?accepts_incomplete=true`;
+    try {
+      return await this.callKEB(payload, endpoint, 'put');
+    } catch (err) {
+      throw new Error(`error while creating binding: ${err.toString()}`);
+    }
+  }
+
   async updateSKR(instanceID, customParams, btpOperatorCreds, isMigration) {
     const payload = {
       service_id: KYMA_SERVICE_ID,

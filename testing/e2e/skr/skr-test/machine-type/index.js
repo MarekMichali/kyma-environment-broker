@@ -93,20 +93,20 @@ function machineTypeE2ETest(getShootOptionsFunc, getShootInfoFunc) {
         console.log('skipping machine type update');
         return;
       }
-      const machineType = await getMachineType(gardener, shoot.name);
+      const machineType = await getMachineType(gardener, shoot.name, options.instanceID);
       expect(machineType).to.equal(updateMachineType);
     });
   });
 }
 
-async function getMachineType(gardener, shoot) {
+async function getMachineType(gardener, shoot, instanceID) {
   if (process.env['GARDENER_KUBECONFIG']) {
     await gardener.waitForShoot(shoot, 'Reconcile');
     const sh = await gardener.getShoot(shoot);
     return sh.spec.provider.workers[0].machine.type;
   }
 
-  const sh = await getShoot(kcp, shoot);
+  const sh = await getShoot(kcp, shoot, instanceID);
   return sh.machineType;
 }
 

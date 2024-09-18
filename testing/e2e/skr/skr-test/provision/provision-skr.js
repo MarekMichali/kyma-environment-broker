@@ -21,7 +21,7 @@ async function provisionSKRAndInitK8sConfig(options, provisioningTimeout) {
     await initK8sConfig(shoot);
   } else {
     console.log('Initiating K8s client...');
-    await initializeK8sClient({kubeconfigPath: shoot.kubeconfig});
+    await initializeK8sClient({kubeconfig: shoot.kubeconfig});
 
     let retryCount = 0;
     const maxRetries = 10;
