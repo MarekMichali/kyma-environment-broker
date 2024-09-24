@@ -197,7 +197,7 @@ class KEBClient {
         token_request: true
       }
     };
-pas
+
     const endpoint = `service_instances/${instanceID}/service_bindings/1?accepts_incomplete=true`;
     try {
       return await this.callKEB(payload, endpoint, 'put');
