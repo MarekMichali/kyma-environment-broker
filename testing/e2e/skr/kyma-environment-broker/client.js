@@ -194,10 +194,10 @@ class KEBClient {
       service_id: KYMA_SERVICE_ID,
       plan_id: this.planID,
       parameters: {
-        token_request: true,
-      },
+        token_request: true
+      }
     };
-
+pas
     const endpoint = `service_instances/${instanceID}/service_bindings/1?accepts_incomplete=true`;
     try {
       return await this.callKEB(payload, endpoint, 'put');
