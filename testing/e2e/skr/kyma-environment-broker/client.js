@@ -192,7 +192,10 @@ class KEBClient {
   async createBinding(instanceID) {
     const payload = {
       service_id: KYMA_SERVICE_ID,
-      plan_id: this.planID
+      plan_id: this.planID,
+      parameters: {
+        token_request: true,
+      },
     };
 
     const endpoint = `service_instances/${instanceID}/service_bindings/1?accepts_incomplete=true`;
