@@ -198,7 +198,7 @@ class KEBClient {
       }
     };
     const bindingID = Math.random().toString(36).substring(2, 18);
-    const endpoint = `service_instances/${instanceID}/service_bindings/${bindingID}/?accepts_incomplete=true`;
+    const endpoint = `service_instances/${instanceID}/service_bindings/${bindingID}?accepts_incomplete=true`;
     try {
       return await this.callKEB(payload, endpoint, 'put');
     } catch (err) {
