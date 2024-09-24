@@ -21,7 +21,7 @@ function machineTypeE2ETest(getShootOptionsFunc, getShootInfoFunc) {
     });
 
     it('Should check default machine type after provisioning', async function() {
-      defaultMachineType = await getMachineType(gardener, shoot.name);
+      defaultMachineType = await getMachineType(gardener, shoot.name, options.instanceID);
       console.log(`Default machine type ${defaultMachineType}`);
     });
 
