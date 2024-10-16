@@ -56,6 +56,8 @@ describe('SKR Binding test', function() {
 
   it('Delete SKR binding', async function() {
     const resp = await keb.deleteBinding('mm-23', bindingID);
+    //sleep for 10 seconds to allow the binding to be deleted
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     expect(resp.status).equal(200);
     console.log(`Deleted binding ${bindingID}`);
 
