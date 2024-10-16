@@ -34,8 +34,11 @@ describe('SKR Binding test', function() {
     bindingID = uuid.v4();
     console.log(`Creating binding ${bindingID}`);
     try {
+      console.log(`Creating binding ${bindingID}`);
       const resp = await keb.createBinding('mm-23', bindingID);
       kubeconfigFromBinding = resp.data.credentials.kubeconfig;
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +60,6 @@ describe('SKR Binding test', function() {
   it('Delete SKR binding', async function() {
     const resp = await keb.deleteBinding('mm-23', bindingID);
     //sleep for 10 seconds to allow the binding to be deleted
-    await new Promise((resolve) => setTimeout(resolve, 10000));
     expect(resp.status).equal(200);
     console.log(`Deleted binding ${bindingID}`);
 
