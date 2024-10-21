@@ -75,6 +75,10 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Remove do-not-merge/release-in-progress labels from opened PR's
         env:
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
