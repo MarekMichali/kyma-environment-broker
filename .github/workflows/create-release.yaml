@@ -21,16 +21,17 @@ on:
         default: false
 
 jobs:
-  validate-release:
-    name: Validate release
+  label-prs:
+    name: Label PRs with do-not-merge/release-in-progress
     runs-on: ubuntu-latest
+    if: always()
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Add do-not-merge label to all opened PR's
+      - name: Add do-not-merge/release-in-progress label to all opened PR's
         env:
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
@@ -38,6 +39,16 @@ jobs:
           for pr in $open_prs; do
               gh pr edit $pr --add-label do-not-merge/release-in-progress
           done
+
+  validate-release:
+    name: Validate release
+    needs: label-prs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Check if tag already exists
         run: |
@@ -67,10 +78,11 @@ jobs:
 
   run-unit-tests:
     name: Unit tests, go mod tidy
+    needs: label-prs
     uses: "./.github/workflows/run-unit-tests-reusable.yaml"
 
-  cleanup:
-    name: Cleanup
+  unlabel-prs:
+    name: Unlabel PRs with do-not-merge/release-in-progress
     needs: [run-unit-tests, validate-release]
     runs-on: ubuntu-latest
     if: always()
@@ -87,3 +99,22 @@ jobs:
           for pr in $open_prs; do
               gh pr edit $pr --remove-label do-not-merge/release-in-progress
           done
+
+ # check-release-in-progress:
+  #  name: Check if another release is in progress
+   # runs-on: ubuntu-latest
+    #steps:
+     # - name: Checkout code
+      #  uses: actions/checkout@v4
+       # with:
+        #  fetch-depth: 0
+
+#      - name: Check for release in progress
+ #       env:
+  #        GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+   #     run: |
+    #      in_progress=$(gh run list --workflow="Create release" --status="in_progress" --json name --jq '.[].name')
+     #     if [ -n "$in_progress" ]; then
+      #      echo "::error ::Another release is already in progress: $in_progress"
+       #     exit 1
+        #  fi
