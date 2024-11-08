@@ -6,14 +6,14 @@ on:
 
 
 jobs:
-  validate-release:
-    name: Validate release
+  create-pr:
+    name: Create PR
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v4
 
         - name: Create a random file
-          run: echo "This is a dummy file" > $(uuidgen).txt
+          run: echo "This is a dummy file" > $(uuidgen).go
   
         - name: Create Pull Request
           uses: peter-evans/create-pull-request@v7
