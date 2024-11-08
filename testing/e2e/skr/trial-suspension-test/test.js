@@ -47,7 +47,7 @@ describe('SKR Trial suspension test', function() {
       throw new Error(`${e.toString()}\n`);
     }
   });
-
+//
   it('should wait until suspension succeeds', async function() {
     try {
       debug(`Waiting until suspension operation succeeds...`);
