@@ -34,9 +34,13 @@ jobs:
       - name: Check if create-release workflow is in progress
         env:
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
-          # gh run list --workflow="Create release" --status="in_progress" --json name --jq '.[].name'
         run: |
           echo "Checking if create-release workflow is in progress"
+          in_progress_workflows=$(gh run list --workflow="Create release" --status="in_progress" --json name --jq '.[].name')
+          if [ -n "$in_progress_workflows" ]; then
+            echo "Create release workflow is in progress"
+            exit 1
+          fi
       - uses: wechuli/allcheckspassed@2e5e8bbc775f5680ed5d02e3a22e2fc7219792ac
         if: ${{ github.event.pull_request.user.login != 'kyma-gopher-bot' }}
         with:
