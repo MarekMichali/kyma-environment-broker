@@ -1,0 +1,21 @@
+name: "Approve PR"
+run-name: Approve PR ${{ inputs.name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'PR number'
+        default: ""
+        required: true
+
+jobs:
+  approve-pr:
+    name: Approve pr
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approve Pull Request
+        uses: juliangruber/approve-pull-request-action@v2
+        with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            number: ${{ inputs.name }}
