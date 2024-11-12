@@ -53,7 +53,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
-          gh api repos/kyma-project/kyma-environment-broker/commits/main -q '.sha'
+          gh api repos/MarekMichali/kyma-environment-broker/commits/main -q '.sha'
           echo "Workflow sha: ${{ github.sha }}"
           if [ $(git tag -l ${{ inputs.name }}) ]; then
             echo "::error ::Tag ${{ inputs.name }} already exists"
