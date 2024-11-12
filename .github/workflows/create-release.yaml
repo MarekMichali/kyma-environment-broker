@@ -89,7 +89,7 @@ jobs:
             exit 1
           fi
 
-  ##    - name: Validate labels
+  #    - name: Validate labels
    #     env:
     #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
      #     REPOSITORY: ${{ env.KYMA_ENVIRONMENT_BROKER_REPO }}
