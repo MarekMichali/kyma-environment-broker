@@ -50,7 +50,10 @@ jobs:
           fetch-depth: 0
 
       - name: Check if tag already exists
+        env:
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
+          gh api repos/kyma-project/kyma-environment-broker/commits/main -q '.sha'
           echo "Workflow sha: ${{ github.sha }}"
           if [ $(git tag -l ${{ inputs.name }}) ]; then
             echo "::error ::Tag ${{ inputs.name }} already exists"
