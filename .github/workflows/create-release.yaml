@@ -76,9 +76,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
-          sleep 300
-          gh api repos/MarekMichali/kyma-environment-broker/commits/main -q '.sha'
+          sleep 60
+          COMMIT_SHA=$(gh api repos/MarekMichali/kyma-environment-broker/commits/main -q '.sha')
           echo "Workflow sha: ${{ github.sha }}"
+          echo "Commit sha: $COMMIT_SHA"
+          if [ "$COMMIT_SHA" != "${{ github.sha }}" ]; then
+          echo "::error ::The commit SHA from the API does not match the workflow SHA"
+          exit 1
+          fi
           if [ $(git tag -l ${{ inputs.name }}) ]; then
             echo "::error ::Tag ${{ inputs.name }} already exists"
             exit 1
