@@ -17,7 +17,7 @@ set -o pipefail # prevents errors in a pipeline from being masked
 # Expected variables:
 #   BOT_GITHUB_TOKEN              - github token used to upload the asset
 #   KYMA_ENVIRONMENT_BROKER_REPO  - Kyma repository
-
+#
 uploadFile() {
   filePath=${1}
   ghAsset=${2}
