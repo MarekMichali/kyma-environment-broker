@@ -20,7 +20,5 @@ jobs:
 
     - name: Run create_pr.sh script
       env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
-      run: |
-        chmod +x scripts/update/create_pr.sh
-        scripts/update/create_pr.sh
+        GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+      run: scripts/create_pr.sh
