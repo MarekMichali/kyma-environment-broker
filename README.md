@@ -1,5 +1,5 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/kyma-project/kyma-environment-broker)](https://api.reuse.software/info/github.com/kyma-project/kyma-environment-broker)
-# Kyma Environment Broker
+# Kyma Environment Brokeree
 
 ## Overview
 
