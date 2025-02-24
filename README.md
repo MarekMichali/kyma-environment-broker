@@ -7,7 +7,7 @@ Kyma Environment Broker (KEB) is a component that allows you to provision [SAP B
 
 ## Read More
 
-To learn more about how to use KEB, read the documentation in the [`user`](./docs/user/) directory.
+To learn more about how to useeee KEB, read the documentation in the [`user`](./docs/user/) directory.
 For more technical details on KEB, go to the [`contributor`](./docs/contributor/) directory.
 
 ## Contributing
