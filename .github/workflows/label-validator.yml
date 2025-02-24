@@ -7,7 +7,7 @@ permissions:
   contents: read
   deployments: read
   issues: read
-  discussions: write
+  discussions: read
   packages: read
   pages: read
   pull-requests: write
