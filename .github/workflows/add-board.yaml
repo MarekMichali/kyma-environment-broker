@@ -1,0 +1,26 @@
+name: "Add to board"
+
+env:
+  KYMA_ENVIRONMENT_BROKER_REPO: ${{ github.repository_owner }}/kyma-environment-broker
+  GIT_EMAIL: mareksm99@gmail.com
+  GIT_NAME: MarekMichali
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  validate-labels: 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Run create_pr.sh script
+      env:
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+      run: |
+        chmod +x scripts/update/create_pr.sh
+        scripts/update/create_pr.sh
