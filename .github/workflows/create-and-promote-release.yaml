@@ -15,7 +15,7 @@ permissions:
   attestations: read
   checks: read
   contents: read
-  deployments: read
+  deployments: write
   issues: read
   discussions: read
   packages: read
