@@ -474,6 +474,7 @@ func SapConvergedCloudSchema(machineTypesDisplay, regionsDisplay map[string]stri
 func PreviewSchema(machineTypesDisplay, additionalMachineTypesDisplay, regionsDisplay map[string]string, machineTypes, additionalMachineTypes []string, additionalParams, update bool, euAccessRestricted bool) *map[string]interface{} {
 	properties := NewProvisioningProperties(machineTypesDisplay, additionalMachineTypesDisplay, regionsDisplay, machineTypes, additionalMachineTypes, AWSRegions(euAccessRestricted), update)
 	properties.Networking = NewNetworkingSchema()
+	properties.AdditionalOIDC = NewAdditionalOIDCConfigs()
 	return createSchemaWithProperties(properties, additionalParams, update, requiredSchemaProperties(), false, false)
 }
 

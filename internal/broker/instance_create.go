@@ -321,6 +321,13 @@ func (b *ProvisionEndpoint) validateAndExtract(details domain.ProvisionDetails, 
 			return ersContext, parameters, apiresponses.NewFailureResponse(err, http.StatusUnprocessableEntity, err.Error())
 		}
 	}
+	if parameters.AdditionalOIDCConfigs != nil {
+		for _, oidcConfig := range parameters.AdditionalOIDCConfigs {
+			if err := oidcConfig.Validate(); err != nil {
+				return ersContext, parameters, apiresponses.NewFailureResponse(err, http.StatusUnprocessableEntity, err.Error())
+			}
+		}
+	}
 
 	if parameters.AdditionalWorkerNodePools != nil {
 		if !supportsAdditionalWorkerNodePools(details.PlanID) {

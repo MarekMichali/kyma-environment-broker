@@ -25,13 +25,14 @@ type RootSchema struct {
 type ProvisioningProperties struct {
 	UpdateProperties
 
-	Name                   NameType        `json:"name"`
-	ShootName              *Type           `json:"shootName,omitempty"`
-	ShootDomain            *Type           `json:"shootDomain,omitempty"`
-	Region                 *Type           `json:"region,omitempty"`
-	Networking             *NetworkingType `json:"networking,omitempty"`
-	Modules                *Modules        `json:"modules,omitempty"`
-	ShootAndSeedSameRegion *Type           `json:"shootAndSeedSameRegion,omitempty"`
+	Name                   NameType            `json:"name"`
+	ShootName              *Type               `json:"shootName,omitempty"`
+	ShootDomain            *Type               `json:"shootDomain,omitempty"`
+	Region                 *Type               `json:"region,omitempty"`
+	Networking             *NetworkingType     `json:"networking,omitempty"`
+	Modules                *Modules            `json:"modules,omitempty"`
+	ShootAndSeedSameRegion *Type               `json:"shootAndSeedSameRegion,omitempty"`
+	AdditionalOIDC         *AdditionalOIDCType `json:"additionalOidcConfigs,omitempty"`
 }
 
 type UpdateProperties struct {
@@ -74,6 +75,17 @@ type OIDCType struct {
 	Type
 	Properties OIDCProperties `json:"properties"`
 	Required   []string       `json:"required"`
+}
+type AdditionalOIDCType struct {
+	Type
+	Items AdditionalOIDCItems `json:"items,omitempty"`
+}
+
+type AdditionalOIDCItems struct {
+	Type
+	ControlsOrder []string       `json:"_controlsOrder,omitempty"`
+	Required      []string       `json:"required,omitempty"`
+	Properties    OIDCProperties `json:"properties,omitempty"`
 }
 
 type Type struct {
@@ -480,6 +492,35 @@ func NewAdditionalWorkerNodePoolsSchema(machineTypesDisplay map[string]string, m
 					Maximum:     300,
 					Default:     20,
 					Description: "Specifies the maximum number of virtual machines to create.",
+				},
+			},
+		},
+	}
+}
+
+func NewAdditionalOIDCConfigs() *AdditionalOIDCType {
+	return &AdditionalOIDCType{
+		Type: Type{
+			Type:        "array",
+			UniqueItems: true,
+			Description: "OIDC configuration"},
+		Items: AdditionalOIDCItems{
+			Required: []string{"clientID", "issuerURL"},
+			Type: Type{
+				Type: "object",
+			},
+			Properties: OIDCProperties{
+				ClientID:       Type{Type: "string", Description: "The client ID for the OpenID Connect client."},
+				IssuerURL:      Type{Type: "string", Description: "The URL of the OpenID issuer, only HTTPS scheme will be accepted."},
+				GroupsClaim:    Type{Type: "string", Description: "If provided, the name of a custom OpenID Connect claim for specifying user groups."},
+				UsernameClaim:  Type{Type: "string", Description: "The OpenID claim to use as the user name."},
+				UsernamePrefix: Type{Type: "string", Description: "If provided, all usernames will be prefixed with this value. If not provided, username claims other than 'email' are prefixed by the issuer URL to avoid clashes. To skip any prefixing, provide the value '-' (dash character without additional characters)."},
+				SigningAlgs: Type{
+					Type: "array",
+					Items: &Type{
+						Type: "string",
+					},
+					Description: "Comma separated list of allowed JOSE asymmetric signing algorithms, for example, RS256, ES256",
 				},
 			},
 		},

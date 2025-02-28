@@ -53,6 +53,7 @@ type UpdatingParametersDTO struct {
 	pkg.AutoScalerParameters `json:",inline"`
 
 	OIDC                      *pkg.OIDCConfigDTO             `json:"oidc,omitempty"`
+	AdditionalOIDCConfigs     []pkg.OIDCConfigDTO            `json:"additionalOidcConfigs,omitempty"`
 	RuntimeAdministrators     []string                       `json:"administrators,omitempty"`
 	MachineType               *string                        `json:"machineType,omitempty"`
 	AdditionalWorkerNodePools []pkg.AdditionalWorkerNodePool `json:"additionalWorkerNodePools"`

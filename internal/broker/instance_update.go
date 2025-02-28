@@ -312,6 +312,17 @@ func (b *UpdateEndpoint) processUpdateParameters(instance *internal.Instance, de
 		instance.Parameters.Parameters.OIDC = params.OIDC
 		updateStorage = append(updateStorage, "OIDC")
 	}
+	if params.AdditionalOIDCConfigs != nil {
+		for _, oidcConfig := range params.AdditionalOIDCConfigs {
+			if err := oidcConfig.Validate(); err != nil {
+				return domain.UpdateServiceSpec{}, apiresponses.NewFailureResponse(err, http.StatusBadRequest, err.Error())
+			}
+		}
+		newAdditionalOIDCConfigs := make([]pkg.OIDCConfigDTO, 0, len(params.AdditionalOIDCConfigs))
+		newAdditionalOIDCConfigs = append(newAdditionalOIDCConfigs, params.AdditionalOIDCConfigs...)
+		instance.Parameters.Parameters.AdditionalOIDCConfigs = newAdditionalOIDCConfigs
+		updateStorage = append(updateStorage, "Additional OIDC Configs")
+	}
 
 	if len(params.RuntimeAdministrators) != 0 {
 		newAdministrators := make([]string, 0, len(params.RuntimeAdministrators))
