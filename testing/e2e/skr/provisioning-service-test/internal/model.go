@@ -21,7 +21,7 @@ type CreateEnvironmentRequest struct {
 }
 
 type EnvironmentParameters struct {
-	Name   string `json:"name"`
+	Name   int    `json:"name"`
 	Region string `json:"region"`
 }
 

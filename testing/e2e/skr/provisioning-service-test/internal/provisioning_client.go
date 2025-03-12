@@ -38,7 +38,7 @@ type KymaConfig struct {
 	PlanName     string
 	PlanID       string
 	User         string
-	InstanceName string
+	InstanceName int
 	Region       string
 }
 
@@ -67,7 +67,7 @@ func (p *ProvisioningClient) CreateEnvironment() (CreatedEnvironmentResponse, er
 		ServiceName:     serviceName,
 		User:            p.cfg.Kyma.User,
 		Parameters: EnvironmentParameters{
-			Name:   p.cfg.Kyma.InstanceName,
+			Name:   123456,
 			Region: p.cfg.Kyma.Region,
 		},
 	}
