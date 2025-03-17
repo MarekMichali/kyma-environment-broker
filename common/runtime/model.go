@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"strings"
@@ -97,11 +98,27 @@ type ProvisioningParametersDTO struct {
 	ShootName   string `json:"shootName,omitempty"`
 	ShootDomain string `json:"shootDomain,omitempty"`
 
-	OIDC                      *OIDCConfigDTO             `json:"oidc,omitempty"`
+	OIDC                      *OIDCConfigField           `json:"oidc,omitempty"`
 	Networking                *NetworkingDTO             `json:"networking,omitempty"`
 	Modules                   *ModulesDTO                `json:"modules,omitempty"`
 	ShootAndSeedSameRegion    *bool                      `json:"shootAndSeedSameRegion,omitempty"`
 	AdditionalWorkerNodePools []AdditionalWorkerNodePool `json:"additionalWorkerNodePools,omitempty"`
+}
+
+type OIDCConfigField []OIDCConfigDTO
+
+func (o *OIDCConfigField) UnmarshalJSON(data []byte) error {
+	var oidcConfigs []OIDCConfigDTO
+	var oidcConfig OIDCConfigDTO
+	if err := json.Unmarshal(data, &oidcConfigs); err != nil {
+		if err := json.Unmarshal(data, &oidcConfig); err != nil {
+			return err
+		}
+		oidcConfigs = append(oidcConfigs, oidcConfig)
+	}
+	*o = oidcConfigs
+	return nil
+
 }
 
 type AutoScalerParameters struct {
@@ -158,6 +175,7 @@ type OIDCConfigDTO struct {
 	SigningAlgs    []string `json:"signingAlgs" yaml:"signingAlgs"`
 	UsernameClaim  string   `json:"usernameClaim" yaml:"usernameClaim"`
 	UsernamePrefix string   `json:"usernamePrefix" yaml:"usernamePrefix"`
+	RequiredClaims []string `json:"requiredClaims" yaml:"requiredClaims"`
 }
 
 const oidcValidSigningAlgs = "RS256,RS384,RS512,ES256,ES384,ES512,PS256,PS384,PS512"
