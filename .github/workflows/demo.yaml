@@ -1,0 +1,65 @@
+name: demo
+
+permissions:
+  id-token: write # Required to receive OIDC tokens
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - uses: kyma-project/docker-registry/.github/actions/setup-kyma@c1f0381f3e059cdbf1883af28a917693ee5207a8
+        with:
+          path: "/usr/local/bin"
+
+      - name: Create OIDC Token
+        id: create-oidc-token
+        run: |
+          AUDIENCE="iteration-review"
+          OIDC_URL_WITH_AUDIENCE="$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$AUDIENCE"
+          IDTOKEN=$(curl \
+            -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            -H "Accept: application/json; api-version=2.0" \
+            "$OIDC_URL_WITH_AUDIENCE" | jq -r .value)
+
+          echo "idToken=${IDTOKEN}" >> $GITHUB_OUTPUT
+          echo $IDTOKEN | jq -R 'split(".") | .[1] | @base64d | fromjson'
+
+      - name: Check Permissions in Kubernetes
+        run: |
+
+          echo "${{ secrets.API_SERVER_CA }}" > ca.crt
+          kubectl \
+          --token=${{ steps.create-oidc-token.outputs.idToken }} \
+          --server=${{ secrets.API_SERVER_URL }} \
+          --certificate-authority=ca.crt \
+          auth can-i list nodes
+
+      - name: Create kubeconfig
+        id: create-kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG_NO_USER }}" > kubeconfig.yaml
+          kyma alpha kubeconfig generate \
+            --kubeconfig kubeconfig.yaml \
+            --audience iteration-review \
+            --output kubeconfig-gh-token.yaml 
+
+          echo "KUBECONFIG=$(pwd)/kubeconfig-gh-token.yaml" >> $GITHUB_ENV
+
+      - name: Get pods
+        run: |
+          kubectl get pods -n kyma-system
+        env:
+          KUBECONFIG: ${{ env.KUBECONFIG }}
