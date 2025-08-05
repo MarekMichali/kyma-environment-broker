@@ -58,8 +58,8 @@ jobs:
 
           echo "KUBECONFIG=$(pwd)/kubeconfig-gh-token.yaml" >> $GITHUB_ENV
 
-      - name: Get pods
+      - name: Get nodes
         run: |
-          kubectl get pods -n kyma-system
+          kubectl get nodes
         env:
           KUBECONFIG: ${{ env.KUBECONFIG }}
