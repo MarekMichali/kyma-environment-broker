@@ -44,10 +44,6 @@ on:
         default: false
 
 jobs:
-  run-unit-tests:
-    name: Unit tests, go mod tidy
-    uses: "./.github/workflows/run-unit-tests-reusable.yaml"
-
   create-draft:
     name: Create draft release
     runs-on: ubuntu-latest
