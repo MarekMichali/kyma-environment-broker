@@ -32,7 +32,7 @@ jobs:
       - name: Download logs from all attempts
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./scripts/download_workflow_logs.sh "Create and promote release" "Create and promote release ${{ github.event.release.tag_name }}"
+        run: ./scripts/download_workflow_logs.sh "Create release" "Create release ${{ github.event.release.tag_name }}"
 
       - name: Upload logs as release assets
         env:
