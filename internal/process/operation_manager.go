@@ -38,7 +38,7 @@ func (om *OperationManager) OperationSucceeded(operation internal.Operation, des
 func (om *OperationManager) OperationFailed(operation internal.Operation, description string, err error, log *slog.Logger) (internal.Operation, time.Duration, error) {
 	// Clean up retry timestamp as operation is done
 	om.removeTimestamp(operation.ID)
-	
+
 	operation.LastError = kebErr.LastError{
 		Reason:    kebErr.Reason(description),
 		Component: om.component,
