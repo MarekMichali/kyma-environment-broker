@@ -24,40 +24,21 @@ type OperationManager struct {
 }
 
 func NewOperationManager(storage storage.Operations, step string, component kebErr.Component) *OperationManager {
-	op := &OperationManager{storage: storage, component: component, step: step, retryTimestamps: make(map[string]time.Time)}
-	go func(op *OperationManager, step string) {
-		ticker := time.NewTicker(time.Hour)
-		defer ticker.Stop()
-		for {
-			<-ticker.C
-			runTimestampGC(op, step)
-		}
-	}(op, step)
-	return op
-}
-
-func runTimestampGC(op *OperationManager, step string) {
-	numberOfDeletions := 0
-	op.mu.Lock()
-	for opId, ts := range op.retryTimestamps {
-		if time.Since(ts) > 48*time.Hour {
-			delete(op.retryTimestamps, opId)
-			numberOfDeletions++
-		}
-	}
-	op.mu.Unlock()
-	if numberOfDeletions > 0 {
-		slog.Info("Operation Manager for step %s has deleted %d old timestamps", step, numberOfDeletions)
-	}
+	return &OperationManager{storage: storage, component: component, step: step, retryTimestamps: make(map[string]time.Time)}
 }
 
 // OperationSucceeded marks the operation as succeeded and returns status of the operation's update
 func (om *OperationManager) OperationSucceeded(operation internal.Operation, description string, log *slog.Logger) (internal.Operation, time.Duration, error) {
+	// Clean up retry timestamp as operation is done
+	om.removeTimestamp(operation.ID)
 	return om.update(operation, domain.Succeeded, description, log)
 }
 
 // OperationFailed marks the operation as failed and returns status of the operation's update
 func (om *OperationManager) OperationFailed(operation internal.Operation, description string, err error, log *slog.Logger) (internal.Operation, time.Duration, error) {
+	// Clean up retry timestamp as operation is done
+	om.removeTimestamp(operation.ID)
+	
 	operation.LastError = kebErr.LastError{
 		Reason:    kebErr.Reason(description),
 		Component: om.component,
@@ -256,4 +237,10 @@ func (om *OperationManager) getRemainingTime(id string, maxTime time.Duration) t
 		}
 		return remaining
 	}
+}
+
+func (om *OperationManager) removeTimestamp(id string) {
+	om.mu.Lock()
+	defer om.mu.Unlock()
+	delete(om.retryTimestamps, id)
 }
