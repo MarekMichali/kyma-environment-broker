@@ -79,14 +79,14 @@ func NewMemoryStorage() BrokerStorage {
 }
 
 type inMemoryEvents struct {
-	events []eventsapi.EventDTO
-	mu     sync.RWMutex
+	events  []eventsapi.EventDTO
+	mu      sync.RWMutex
 	maxSize int
 }
 
 func NewInMemoryEvents() *inMemoryEvents {
 	return &inMemoryEvents{
-		events: make([]eventsapi.EventDTO, 0),
+		events:  make([]eventsapi.EventDTO, 0),
 		maxSize: 10000, // Keep only last 10k events to prevent unbounded growth
 	}
 }
@@ -98,23 +98,23 @@ func (_ *inMemoryEvents) RunGarbageCollection(pollingPeriod, retention time.Dura
 func (e *inMemoryEvents) InsertEvent(eventLevel eventsapi.EventLevel, message, instanceID, operationID string) {
 	e.mu.Lock()
 	defer e.mu.Unlock()
-	
+
 	e.events = append(e.events, eventsapi.EventDTO{Level: eventLevel, InstanceID: &instanceID, OperationID: &operationID, Message: message})
-	
+
 	// Prevent unbounded growth by keeping only the most recent events
 	if len(e.events) > e.maxSize {
 		// Remove oldest 20% of events when limit is reached
 		removeCount := e.maxSize / 5
 		e.events = e.events[removeCount:]
 	}
-	
+
 	slog.Info(fmt.Sprintf("EVENT [instanceID=%v/operationID=%v] %v: %v", instanceID, operationID, eventLevel, message))
 }
 
 func (e *inMemoryEvents) ListEvents(filter eventsapi.EventFilter) ([]eventsapi.EventDTO, error) {
 	e.mu.RLock()
 	defer e.mu.RUnlock()
-	
+
 	var events []eventsapi.EventDTO
 	for _, ev := range e.events {
 		if !requiredContains(ev.InstanceID, filter.InstanceIDs) {
