@@ -13,7 +13,9 @@ metricsv2:
   operationResultRetentionPeriod: 2m
   # Frequency of polling for operation statistics.
   operationStatsPollingInterval: 1m
-
+events:
+  # Enables or disables the events API and event storage for operation events (true/false).
+  enabled: false
 plansConfiguration:
   sap-converged-cloud:
     regularMachines:

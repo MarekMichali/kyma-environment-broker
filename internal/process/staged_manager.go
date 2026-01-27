@@ -269,42 +269,27 @@ func (m *StagedManager) runStep(step Step, operation internal.Operation, logger 
 func (m *StagedManager) publishEventOnFail(operation *internal.Operation, err error) {
 	logOperation := m.log.With("operationID", operation.ID, "error_component", operation.LastError.GetComponent(), "error_reason", operation.LastError.GetReason())
 	logOperation.Error(fmt.Sprintf("Last error: %s", operation.LastError.Error()))
-
-	m.publishOperationFinishedEvent(*operation)
-
-	m.publisher.Publish(context.TODO(), OperationStepProcessed{
-		StepProcessed: StepProcessed{
-			Duration: time.Since(operation.CreatedAt),
-			Error:    err,
-		},
-		OldOperation: *operation,
-		Operation:    *operation,
-	})
+	// Events disabled to prevent memory leak from goroutines holding full Operation objects
+	_ = err
+	return
 }
 
 func (m *StagedManager) publishEventOnSuccess(operation *internal.Operation) {
-	m.publisher.Publish(context.TODO(), OperationSucceeded{
-		Operation: *operation,
-	})
-
-	m.publishOperationFinishedEvent(*operation)
-
-	m.publishDeprovisioningSucceeded(operation)
+	// Events disabled to prevent memory leak from goroutines holding full Operation objects
+	_ = operation
+	return
 }
 
 func (m *StagedManager) publishOperationFinishedEvent(operation internal.Operation) {
-	m.publisher.Publish(context.TODO(), OperationFinished{
-		Operation: operation,
-		PlanID:    operation.ProvisioningParameters.PlanID,
-	})
+	// Skip event publishing to prevent memory accumulation from goroutines holding full Operation objects
+	// Each Operation can be 100KB+ (with KymaTemplate YAML), and with 50k operations this causes massive memory pressure
+	// TODO: Refactor to pass only operation IDs in events instead of full structs
+	_ = operation // suppress unused variable warning
+	return
 }
 
 func (m *StagedManager) publishDeprovisioningSucceeded(operation *internal.Operation) {
-	if operation.State == domain.Succeeded && operation.Type == internal.OperationTypeDeprovision {
-		m.publisher.Publish(
-			context.TODO(), DeprovisioningSucceeded{
-				Operation: internal.DeprovisioningOperation{Operation: *operation},
-			},
-		)
-	}
+	// Events disabled to prevent memory leak from goroutines holding full Operation objects
+	_ = operation
+	return
 }

@@ -25,8 +25,8 @@ jobs:
       provisioning-max-step-processing-time: "30s"
       update-max-step-processing-time: "30s"
       deprovisioning-max-step-processing-time: "30s"
-      baseline-monitoring-minutes: "0"
-      post-test-monitoring-minutes: "0"
+      baseline-monitoring-minutes: "5"
+      post-test-monitoring-minutes: "5"
       
       # Workers Configuration
       provisioning-workers-amount: "25"

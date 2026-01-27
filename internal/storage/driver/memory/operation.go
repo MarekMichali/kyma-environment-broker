@@ -20,6 +20,10 @@ type operations struct {
 	operations               map[string]internal.Operation
 	upgradeClusterOperations map[string]internal.UpgradeClusterOperation
 	updateOperations         map[string]internal.UpdatingOperation
+
+	// Track completed operations for cleanup
+	completedOperations    []string
+	maxCompletedOperations int
 }
 
 // NewOperation creates in-memory storage for OSB operations.
@@ -28,6 +32,8 @@ func NewOperation() *operations {
 		operations:               make(map[string]internal.Operation, 0),
 		upgradeClusterOperations: make(map[string]internal.UpgradeClusterOperation, 0),
 		updateOperations:         make(map[string]internal.UpdatingOperation, 0),
+		completedOperations:      make([]string, 0),
+		maxCompletedOperations:   10, // Keep only last 1000 completed operations
 	}
 }
 
@@ -144,6 +150,22 @@ func (s *operations) UpdateOperation(op internal.Operation) (*internal.Operation
 	}
 	op.Version = op.Version + 1
 	s.operations[op.ID] = op
+
+	// Track completed operations for cleanup to prevent unbounded memory growth
+	if op.State == domain.Succeeded || op.State == domain.Failed {
+		s.completedOperations = append(s.completedOperations, op.ID)
+
+		// Clean up oldest completed operations when we exceed the limit
+		if len(s.completedOperations) > s.maxCompletedOperations {
+			// Remove oldest 20% to reduce cleanup frequency
+			removeCount := s.maxCompletedOperations / 5
+			for i := 0; i < removeCount; i++ {
+				oldOpID := s.completedOperations[i]
+				delete(s.operations, oldOpID)
+			}
+			s.completedOperations = s.completedOperations[removeCount:]
+		}
+	}
 
 	return &op, nil
 }
