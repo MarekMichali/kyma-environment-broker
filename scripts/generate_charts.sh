@@ -85,19 +85,32 @@ echo "" >> $GITHUB_STEP_SUMMARY
 echo "Leak analysis compares 🔵 Baseline vs 🔴 Post-Test metrics" >> $GITHUB_STEP_SUMMARY
 echo '```' >> $GITHUB_STEP_SUMMARY
 echo "" >> $GITHUB_STEP_SUMMARY
+
+jq --argjson baseline_end "$BASELINE_END" --argjson post_start "$POST_TEST_START" '
+{
+  goroutines_baseline: .goroutines[0:$baseline_end],
+  goroutines_test: .goroutines[$baseline_end:$post_start],
+  goroutines_post: .goroutines[$post_start:],
+  open_fds_baseline: .open_fds[0:$baseline_end],
+  open_fds_test: .open_fds[$baseline_end:$post_start],
+  open_fds_post: .open_fds[$post_start:],
+  mem_alloc_baseline: .mem_alloc[0:$baseline_end],
+  mem_alloc_test: .mem_alloc[$baseline_end:$post_start],
+  mem_alloc_post: .mem_alloc[$post_start:]
+}' /tmp/aggregated_metrics.json > /tmp/segmented_metrics.json
       
 echo '```mermaid' >> $GITHUB_STEP_SUMMARY
-echo "xychart-beta title \"Goroutines\" line \"Goroutines\" [$(jq -r '.goroutines | @csv' /tmp/aggregated_metrics.json)]" >> $GITHUB_STEP_SUMMARY
+echo "xychart-beta title \"Goroutines (🔵 Baseline | ⚡ Test | 🔴 Post)\" line \"Baseline\" [$(jq -r '.goroutines_baseline | @csv' /tmp/segmented_metrics.json)] line \"Test\" [$(jq -r '.goroutines_test | @csv' /tmp/segmented_metrics.json)] line \"Post\" [$(jq -r '.goroutines_post | @csv' /tmp/segmented_metrics.json)]" >> $GITHUB_STEP_SUMMARY
 echo '```' >> $GITHUB_STEP_SUMMARY
 
 echo '```mermaid' >> $GITHUB_STEP_SUMMARY
-echo "xychart-beta title \"Open FDs\" line \"open_fds\" [$(jq -r '.open_fds | @csv' /tmp/aggregated_metrics.json)]" >> $GITHUB_STEP_SUMMARY
+echo "xychart-beta title \"Open FDs (🔵 Baseline | ⚡ Test | 🔴 Post)\" line \"Baseline\" [$(jq -r '.open_fds_baseline | @csv' /tmp/segmented_metrics.json)] line \"Test\" [$(jq -r '.open_fds_test | @csv' /tmp/segmented_metrics.json)] line \"Post\" [$(jq -r '.open_fds_post | @csv' /tmp/segmented_metrics.json)]" >> $GITHUB_STEP_SUMMARY
 echo '```' >> $GITHUB_STEP_SUMMARY
 
 # For scheduled/manual runs, split memory charts to avoid Mermaid text size limit
 if [[ "$GITHUB_EVENT_NAME" == "schedule" || "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
   echo '```mermaid' >> $GITHUB_STEP_SUMMARY
-  echo "xychart-beta title \"Memory - Alloc\" y-axis \"Memory (in MiB)\" line \"Alloc\" [$(jq -r '.mem_alloc | @csv' /tmp/aggregated_metrics.json)]" >> $GITHUB_STEP_SUMMARY
+  echo "xychart-beta title \"Memory - Alloc (🔵 Baseline | ⚡ Test | 🔴 Post)\" y-axis \"Memory (in MiB)\" line \"Baseline\" [$(jq -r '.mem_alloc_baseline | @csv' /tmp/segmented_metrics.json)] line \"Test\" [$(jq -r '.mem_alloc_test | @csv' /tmp/segmented_metrics.json)] line \"Post\" [$(jq -r '.mem_alloc_post | @csv' /tmp/segmented_metrics.json)]" >> $GITHUB_STEP_SUMMARY
   echo '```' >> $GITHUB_STEP_SUMMARY
   
   echo '```mermaid' >> $GITHUB_STEP_SUMMARY
