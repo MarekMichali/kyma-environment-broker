@@ -45,34 +45,34 @@ global:
       repository: eu.gcr.io/sap-ti-dx-kyma-mps-dev/images/cloudsql-proxy
       tag: 2.11.3-sap
     container_registry:
-      path: europe-docker.pkg.dev/kyma-project/prod
+      path: europe-docker.pkg.dev/kyma-project/dev
     kyma_environment_broker:
       dir:
-      version: "1.25.29"
+      version: "PR-2779"
     kyma_environment_broker_schema_migrator:
       dir:
-      version: 1.25.29
+      version: PR-2779
     kyma_environments_subaccount_cleanup_job:
       dir:
-      version: "1.25.29"
+      version: "PR-2779"
     kyma_environment_expirator_job:
       dir:
-      version: "1.25.29"
+      version: "PR-2779"
     kyma_environment_deprovision_retrigger_job:
       dir:
-      version: "1.25.29"
+      version: "PR-2779"
     kyma_environment_runtime_reconciler:
       dir:
-      version: "1.25.29"
+      version: "PR-2779"
     kyma_environment_subaccount_sync:
       dir:
-      version: "1.25.29"
+      version: "PR-2779"
     kyma_environment_globalaccounts:
       dir:
-      version: "1.25.29"
+      version: "PR-2779"
     kyma_environment_service_binding_cleanup_job:
       dir:
-      version: 1.25.29
+      version: PR-2779
   ingress:
     domainName: localhost
   istio:
