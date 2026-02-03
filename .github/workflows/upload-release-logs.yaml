@@ -20,7 +20,7 @@ jobs:
         run: |
           echo "Checking if a release workflow is in progress..."
           while true; do
-            IN_PROGRESS=$(gh run list --workflow "Create and promote release" --json status -L 1 --jq '.[] | select(.status == "in_progress") | .status')
+            IN_PROGRESS=$(gh run list --workflow "Create release" --json status -L 1 --jq '.[] | select(.status == "in_progress") | .status')
             if [ -z "$IN_PROGRESS" ]; then
               echo "No release workflow in progress."
               echo "Waiting 10 seconds for logs to be available..."
@@ -37,7 +37,7 @@ jobs:
           REPO: ${{ github.repository }}
           REPO_NAME: ${{ github.event.repository.name }}
           RELEASE_VERSION: ${{ github.event.release.tag_name }}
-        run: ./scripts/download_workflow_logs.sh "Create and promote release" "Create and promote release ${{ github.event.release.tag_name }}"
+        run: ./scripts/download_workflow_logs.sh "Create release" "Create release ${{ github.event.release.tag_name }}"
 
       - name: Upload logs as release assets
         env:
