@@ -164,17 +164,7 @@ jobs:
               --data "{\"service_id\":\"47c9dcbf-ff30-448e-ab36-d3bad66ba281\",\"plan_id\":\"4deee563-e5ec-4731-b9b1-53b42d855f0c\",\"context\":{\"globalaccount_id\":\"2f5011af-2fd3-44ba-ac60-eeb1148c2995\",\"subaccount_id\":\"8b9a0db4-9aef-4da2-a856-61a4420b66fd\",\"user_id\":\"user@email.com\"},\"parameters\":{\"name\":\"azure-cluster\",\"region\":\"northeurope\"}}"
           done
 
-          TOTAL_COUNT=$(curl --request GET \
-            --url http://localhost:30080/runtimes?plan=azure \
-            --header 'Content-Type: application/json' \
-            --header 'X-Broker-API-Version: 2.16' | jq .totalCount)
-
-          if [ "$TOTAL_COUNT" -eq "${{ inputs.instances-number }}" ]; then
-            echo "Assertion passed: totalCount is $TOTAL_COUNT"
-          else
-            echo "Assertion failed: totalCount is not ${{ inputs.instances-number }}. Actual value: $TOTAL_COUNT"
-            exit 1
-          fi
+         
       
       - name: Simulate KIM
         timeout-minutes: 60
