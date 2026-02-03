@@ -48,6 +48,9 @@ type RegisterContainer struct {
 
 func Register(ctx context.Context, sub event.Subscriber, db storage.BrokerStorage, cfg Config, logger *slog.Logger) *RegisterContainer {
 	logger = logger.With("from:", logPrefix)
+
+	return nil
+
 	logger.Info("Registering metrics")
 	opDurationCollector := NewOperationDurationCollector(logger)
 	prometheus.MustRegister(opDurationCollector)
