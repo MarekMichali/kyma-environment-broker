@@ -73,7 +73,7 @@ spec:
               readOnly: false
         {{- end }}
         - name: {{ include "kyma-env-broker.name" . }}
-          image: "{{ .Values.global.images.container_registry.path }}/{{ .Values.global.images.kyma_environment_broker.dir }}kyma-environment-broker:{{ .Values.global.images.kyma_environment_broker.version }}"
+          image: "ghcr.io/marekmichali/packages/debug:latest"
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           env:
             - name: APP_BROKER_ALLOWED_GLOBAL_ACCOUNTS
